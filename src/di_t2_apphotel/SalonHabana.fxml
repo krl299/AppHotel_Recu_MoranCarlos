@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="617.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pruebahotel.SalonHabanaController">
+   <children>
+      <VBox>
+         <children>
+            <Label text="Datos del Cliente" underline="true">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label text="DNI/CIF:" />
+                  <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="157.0" />
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#onActionBtnBuscar">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../recursos/lupa.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label text="Nombre:" />
+                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="253.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label text="Dirección:">
+                     <HBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="textFieldDireccion" disable="true" prefHeight="25.0" prefWidth="256.0" />
+                  <Label text="Teléfono:" />
+                  <TextField fx:id="textFieldTelefono" disable="true" prefHeight="25.0" prefWidth="189.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </VBox>
+      <VBox>
+         <children>
+            <Label text="Datos de la Reserva" underline="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                     <children>
+                        <Label text="Tipo de evento">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <RadioButton fx:id="roundBtnBanquete" mnemonicParsing="false" onAction="#onActionBanquete" selected="true" text="Banquete">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="grupoBtn1" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="roundBtnJornada" mnemonicParsing="false" onAction="#onActionJornada" text="Jornada" toggleGroup="$grupoBtn1" />
+                        <RadioButton fx:id="roundBtnCongreso" mnemonicParsing="false" onAction="#onActionCongreso" text="Congreso" toggleGroup="$grupoBtn1" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="100.0" prefWidth="485.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="465.0" spacing="10.0">
+                           <children>
+                              <Label text="Numero de Personas:" />
+                              <TextField fx:id="textFiedlPersonas" prefHeight="25.0" prefWidth="41.0" />
+                              <Label fx:id="labelTipoCocina" text="Tipo de Cocina:">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="comboBoxTipoCocina" prefHeight="25.0" prefWidth="176.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="checkBoxHabitaciones" disable="true" mnemonicParsing="false" onAction="#onActionNecesitasHab" text="¿Necesitas Habitaciones?" />
+                              <Label fx:id="labelCuantas" disable="true" text="¿Cuántas?">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="textFieldHab" disable="true" prefHeight="25.0" prefWidth="39.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <DatePicker fx:id="datePickerFecha" prefHeight="25.0" prefWidth="231.0" promptText="Fecha de evento" />
+                  <Label fx:id="labelNumDias" disable="true" text="Número de días:" />
+                  <TextField fx:id="textFieldDIas" disable="true" prefHeight="25.0" prefWidth="42.0" />
+                  <Label fx:id="labelTipoElegido" text="Tipo Elegido: Banquete" textFill="#37b3e4">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </VBox>
+      <ImageView fitHeight="52.0" fitWidth="250.0" pickOnBounds="true">
+         <VBox.margin>
+            <Insets bottom="15.0" left="20.0" top="15.0" />
+         </VBox.margin>
+         <image>
+            <Image url="@../recursos/cab_congresos.jpg" />
+         </image>
+      </ImageView>
+      <GridPane hgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="95.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="404.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="82.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Limpiar" GridPane.halignment="CENTER" />
+            <Button mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </GridPane>
+   </children>
+</VBox>
