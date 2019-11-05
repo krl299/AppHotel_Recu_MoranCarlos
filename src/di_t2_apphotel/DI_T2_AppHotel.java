@@ -13,16 +13,14 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Ailla
+ * @author Alberto Leon
  */
 public class DI_T2_AppHotel extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-        
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
         Scene scene = new Scene(root);
-        
         stage.setScene(scene);
         stage.show();
     }
