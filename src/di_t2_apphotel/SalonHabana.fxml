@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="617.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.SalonHabanaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="617.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.SalonHabanaController">
    <children>
       <VBox>
          <children>
@@ -157,17 +157,17 @@
       </ImageView>
       <GridPane hgap="10.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="95.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="404.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="91.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="419.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="82.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Limpiar" GridPane.halignment="CENTER" />
-            <Button mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#onActionLimpiar" text="Limpiar" GridPane.halignment="CENTER" />
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionCancelar" text="Cancelar" GridPane.columnIndex="2" />
+            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#onActionAceptar" text="Aceptar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>

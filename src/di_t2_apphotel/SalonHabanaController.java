@@ -7,10 +7,14 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -71,6 +75,12 @@ public class SalonHabanaController implements Initializable {
     private TextField textFieldDIas;
     @FXML
     private Label labelTipoElegido;
+    @FXML
+    private Button btnLimpiar;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnAceptar;
 
     /**
      * Initializes the controller class.
@@ -132,6 +142,28 @@ public class SalonHabanaController implements Initializable {
             DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
         } catch (SQLException ex) {
         }
+    }
+
+    @FXML
+    private void onActionLimpiar(ActionEvent event) {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer limpiar los datos (no se borrarán sus datos)?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Limpiar datos");
+
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            textFieldDNI.setText("");
+            textFieldNombre.setText("");
+            textFieldDireccion.setText("");
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionAceptar(ActionEvent event) {
     }
 
 }

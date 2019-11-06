@@ -13,12 +13,15 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -89,12 +92,18 @@ public class HabitacionesController implements Initializable {
     @FXML
     private void onActionListenerLimpiar(ActionEvent event) {
 
-        //Añadir Alerta
-        textFieldDNI.setText("");
-        textFieldNombre.setText("");
-        textFieldDireccion.setText("");
-        textFieldLocalidad.setText("");
-        comboBoxProvincia.getSelectionModel().clearSelection();
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer limpiar los datos (no se borrarán sus datos)?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Limpiar datos");
+
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            textFieldDNI.setText("");
+            textFieldNombre.setText("");
+            textFieldDireccion.setText("");
+            textFieldLocalidad.setText("");
+            comboBoxProvincia.getSelectionModel().clearSelection();
+        }
     }
 
     @FXML
@@ -122,11 +131,11 @@ public class HabitacionesController implements Initializable {
                     textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
                     textFieldDireccion.setText(cliente.getDireccion());
                     textFieldLocalidad.setText(cliente.getLocalidad());
-                    
+
                     Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
                     List listProvincia = queryProvinciaFindAll.getResultList();
                     comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
-                    
+
                     comboBoxProvincia.setValue(cliente.getProvincia());
                     //Cambiar lo que se muestra en el combobox de provincia
                 }
