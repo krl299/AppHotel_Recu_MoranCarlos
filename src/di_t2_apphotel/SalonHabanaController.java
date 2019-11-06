@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javax.persistence.EntityManager;
 
 /**
  * FXML Controller class
@@ -20,6 +21,8 @@ import javafx.scene.control.ToggleGroup;
  * @author Alberto León
  */
 public class SalonHabanaController implements Initializable {
+
+    private EntityManager entityManager;
 
     @FXML
     private TextField textFieldDNI;
@@ -66,7 +69,7 @@ public class SalonHabanaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void onActionBanquete(ActionEvent event) {
@@ -87,5 +90,5 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionBtnBuscar(ActionEvent event) {
     }
-    
+
 }

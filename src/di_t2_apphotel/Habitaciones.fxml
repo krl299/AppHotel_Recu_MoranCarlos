@@ -9,6 +9,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
    <children>
       <Label text="Datos del cliente" underline="true">
          <font>
@@ -129,7 +130,10 @@
                   </Label>
                   <VBox disable="true" prefHeight="81.0" prefWidth="260.0" spacing="3.0" GridPane.rowIndex="1">
                      <children>
-                        <RadioButton fx:id="radBtnAlojamientoDesayuno" mnemonicParsing="false" text="Alojamiento y desayuno" />
+                        <RadioButton fx:id="radBtnAlojamientoDesayuno" mnemonicParsing="false" text="Alojamiento y desayuno">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="radioButtons" />
+                           </toggleGroup></RadioButton>
                         <RadioButton fx:id="radBtnMediaPension" mnemonicParsing="false" text="Media Pensión" />
                         <RadioButton fx:id="radBtnPensionCompleta" mnemonicParsing="false" text="Pensión Completa" />
                      </children>

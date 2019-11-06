@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package di_t2_apphotel;
 
 import javafx.application.Application;
@@ -16,14 +11,17 @@ import javafx.stage.Stage;
  * @author Alberto Leon
  */
 public class DI_T2_AppHotel extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
+
+        stage.setResizable(false);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 
     /**
      * @param args the command line arguments
@@ -31,5 +29,5 @@ public class DI_T2_AppHotel extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
