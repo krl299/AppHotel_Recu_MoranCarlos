@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -60,8 +59,6 @@ public class SalonHabanaController implements Initializable {
     private TextField textFieldDIas;
     @FXML
     private Label labelTipoElegido;
-    @FXML
-    private Button btnBuscar;
 
     /**
      * Initializes the controller class.
@@ -87,8 +84,5 @@ public class SalonHabanaController implements Initializable {
     private void onActionNecesitasHab(ActionEvent event) {
     }
 
-    @FXML
-    private void onActionBtnBuscar(ActionEvent event) {
-    }
 
 }

@@ -33,18 +33,9 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="DNI/CIF:" />
-                  <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="157.0" />
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#onActionBtnBuscar">
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../recursos/lupa.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="174.0" />
                   <Label text="Nombre:" />
-                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="253.0" />
+                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="281.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="20.0" right="20.0" />

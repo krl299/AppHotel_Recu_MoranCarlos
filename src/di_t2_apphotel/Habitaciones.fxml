@@ -10,8 +10,6 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -20,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
    <children>
       <Label text="Datos del cliente" underline="true">
          <font>
@@ -33,17 +31,8 @@
                <children>
                   <Label text="DNI:" HBox.hgrow="ALWAYS" />
                   <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="124.0" />
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#onActionBtnBuscar" prefHeight="25.0" prefWidth="25.0">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../recursos/lupa.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <Label text="Nombre:" />
-                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="27.0" prefWidth="248.0">
+                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="27.0" prefWidth="296.0">
                      <padding>
                         <Insets bottom="5.0" top="5.0" />
                      </padding>

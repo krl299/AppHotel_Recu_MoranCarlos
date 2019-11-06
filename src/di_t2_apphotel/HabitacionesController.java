@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,8 +73,6 @@ public class HabitacionesController implements Initializable {
     @FXML
     private Button btnCancelar;
     @FXML
-    private Button btnBuscar;
-    @FXML
     private ToggleGroup radioButtons;
 
     /**
@@ -113,7 +109,6 @@ public class HabitacionesController implements Initializable {
         pararConexion();
     }
 
-    @FXML
     private void onActionBtnBuscar(ActionEvent event){
 
         iniciarConexion();
