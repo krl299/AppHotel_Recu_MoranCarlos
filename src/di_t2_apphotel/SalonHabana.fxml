@@ -33,7 +33,7 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="DNI/CIF:" />
-                  <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="174.0" />
+                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="25.0" prefWidth="174.0" />
                   <Label text="Nombre:" />
                   <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="281.0" />
                </children>

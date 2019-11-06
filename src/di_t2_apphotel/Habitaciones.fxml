@@ -30,7 +30,7 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="DNI:" HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="textFieldDNI" prefHeight="25.0" prefWidth="124.0" />
+                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="25.0" prefWidth="124.0" />
                   <Label text="Nombre:" />
                   <TextField fx:id="textFieldNombre" disable="true" prefHeight="27.0" prefWidth="296.0">
                      <padding>

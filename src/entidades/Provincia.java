@@ -118,5 +118,5 @@ public class Provincia implements Serializable {
     public String toString() {
         return "di_t2_apphotel.Provincia[ id=" + id + " ]";
     }
-    
+   
 }

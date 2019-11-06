@@ -3,11 +3,13 @@
   <persistence-unit name="DI_T2_AppHotelPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>entidades.Reservahabitacion</class>
-    <class>entidades.Cliente</class>
     <class>entidades.Provincia</class>
     <class>entidades.Reservasalon</class>
+    <class>di_t2_apphotel.Cliente</class>
+    <class>entidades.Cliente</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby:AppHotel_Bionic;create=true"/>
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:derby:AppHotel_Bionic;create=true"/>-->
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\\DBHotel;create=true"/>
       <property name="javax.persistence.jdbc.user" value="APP"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
       <property name="javax.persistence.jdbc.password" value="APP"/>

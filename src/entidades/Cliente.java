@@ -6,9 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,14 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author usuario
+ * @author Usuario
  */
 @Entity
 @Table(name = "CLIENTE")
@@ -33,8 +29,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Cliente.findByDni", query = "SELECT c FROM Cliente c WHERE c.dni = :dni")
     , @NamedQuery(name = "Cliente.findByNombre", query = "SELECT c FROM Cliente c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "Cliente.findByApellidos", query = "SELECT c FROM Cliente c WHERE c.apellidos = :apellidos")
-    , @NamedQuery(name = "Cliente.findByTelefono", query = "SELECT c FROM Cliente c WHERE c.telefono = :telefono")})
+    , @NamedQuery(name = "Cliente.findByTelefono", query = "SELECT c FROM Cliente c WHERE c.telefono = :telefono")
+    , @NamedQuery(name = "Cliente.findByDireccion", query = "SELECT c FROM Cliente c WHERE c.direccion = :direccion")})
 public class Cliente implements Serializable {
+
+    @Column(name = "LOCALIDAD")
+    private String localidad;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,10 +49,8 @@ public class Cliente implements Serializable {
     private String apellidos;
     @Column(name = "TELEFONO")
     private String telefono;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-    private Collection<Reservasalon> reservasalonCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-    private Collection<Reservahabitacion> reservahabitacionCollection;
+    @Column(name = "DIRECCION")
+    private String direccion;
     @JoinColumn(name = "PROVINCIA", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Provincia provincia;
@@ -102,22 +100,12 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
     }
 
-    @XmlTransient
-    public Collection<Reservasalon> getReservasalonCollection() {
-        return reservasalonCollection;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setReservasalonCollection(Collection<Reservasalon> reservasalonCollection) {
-        this.reservasalonCollection = reservasalonCollection;
-    }
-
-    @XmlTransient
-    public Collection<Reservahabitacion> getReservahabitacionCollection() {
-        return reservahabitacionCollection;
-    }
-
-    public void setReservahabitacionCollection(Collection<Reservahabitacion> reservahabitacionCollection) {
-        this.reservahabitacionCollection = reservahabitacionCollection;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public Provincia getProvincia() {
@@ -150,7 +138,15 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "di_t2_apphotel.Cliente[ dni=" + dni + " ]";
+        return "entidades.Cliente[ dni=" + dni + " ]";
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
     
 }

@@ -6,6 +6,7 @@
 package di_t2_apphotel;
 
 import entidades.Cliente;
+import entidades.Provincia;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,6 +26,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -49,7 +52,7 @@ public class HabitacionesController implements Initializable {
     @FXML
     private TextField textFieldLocalidad;
     @FXML
-    private ComboBox<?> comboBoxProvincia;
+    private ComboBox<Provincia> comboBoxProvincia;
     @FXML
     private DatePicker datePickerLlegada;
     @FXML
@@ -80,12 +83,7 @@ public class HabitacionesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        iniciarConexion();
-        Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
-        List listProvincia = queryProvinciaFindAll.getResultList();
-        comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
-        
-        pararConexion();
+
     }
 
     @FXML
@@ -100,45 +98,57 @@ public class HabitacionesController implements Initializable {
     }
 
     @FXML
-    private void onActionListenerAceptar(ActionEvent event){
+    private void onActionListenerAceptar(ActionEvent event) {
         pararConexion();
     }
 
     @FXML
-    private void onActionListenerCancelar(ActionEvent event){
+    private void onActionListenerCancelar(ActionEvent event) {
         pararConexion();
     }
 
-    private void onActionBtnBuscar(ActionEvent event){
+    @FXML
+    private void onActionBtnBuscar(KeyEvent event) {
 
-        iniciarConexion();
-        
-        Query queryCliente = em.createNamedQuery("Cliente.findByDni");
-        if(queryCliente.getResultList()!=null)
-        {
-            Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
-            
-            textFieldNombre.setText(cliente.getNombre()+cliente.getApellidos());
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            if ((!textFieldDNI.equals("")) && (textFieldNombre.getText() != null)) {
+                iniciarConexion();
+
+                Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
+                List<Cliente> listaCliente = queryCliente.getResultList();
+                if (!listaCliente.isEmpty()) {
+                    Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
+
+                    textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
+                    textFieldDireccion.setText(cliente.getDireccion());
+                    textFieldLocalidad.setText(cliente.getLocalidad());
+                    
+                    Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
+                    List listProvincia = queryProvinciaFindAll.getResultList();
+                    comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
+                    
+                    comboBoxProvincia.setValue(cliente.getProvincia());
+                    //Cambiar lo que se muestra en el combobox de provincia
+                }
+                pararConexion();
+            }
         }
-        
-        pararConexion();
     }
 
-    private void iniciarConexion()
-    {
-        Map<String,String> emfProperties = new HashMap<String,String>();
+    private void iniciarConexion() {
+        Map<String, String> emfProperties = new HashMap<String, String>();
         emfProperties.put("javax.persistence.jdbc.user", "APP");
         emfProperties.put("javax.persistence.jdbc.password", "App");
-        emfProperties.put("javax.persistence.schema-generation.database.action","create");
-        emf= Persistence.createEntityManagerFactory("DI_T2_AppHotelPU",emfProperties);
+        emfProperties.put("javax.persistence.schema-generation.database.action", "create");
+        emf = Persistence.createEntityManagerFactory("DI_T2_AppHotelPU", emfProperties);
         em = emf.createEntityManager();
     }
-    
+
     private void pararConexion() {
         em.close();
         emf.close();
         try {
-            DriverManager.getConnection("jdbc:derby:BDAgenda;shutdown=true");
+            DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
         } catch (SQLException ex) {
         }
     }
