@@ -109,19 +109,31 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionBtnBuscar(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if ((!textFieldDNI.equals("")) && (textFieldNombre.getText() != null)) {
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))) {
                 iniciarConexion();
 
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
+
+                    textFieldNombre.setDisable(true);
+                    textFieldDireccion.setDisable(true);
+                    textFieldTelefono.setDisable(true);
+
                     Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
 
                     textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
                     textFieldDireccion.setText(cliente.getDireccion());
                     textFieldTelefono.setText(cliente.getTelefono());
+                } else {
+                    textFieldNombre.setText("");
+                    textFieldNombre.setDisable(false);
+                    textFieldDireccion.setText("");
+                    textFieldDireccion.setDisable(false);
+                    comboBoxTipoCocina.setValue(null);
+                    textFieldTelefono.setText("");
+                    textFieldTelefono.setDisable(false);
                 }
-                pararConexion();
             }
         }
     }

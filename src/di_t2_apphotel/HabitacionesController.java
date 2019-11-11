@@ -25,12 +25,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.util.StringConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -120,12 +123,18 @@ public class HabitacionesController implements Initializable {
     private void onActionBtnBuscar(KeyEvent event) {
 
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if ((!textFieldDNI.equals("")) && (textFieldNombre.getText() != null)) {
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))) {
                 iniciarConexion();
 
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
+
+                    textFieldNombre.setDisable(true);
+                    textFieldDireccion.setDisable(true);
+                    textFieldLocalidad.setDisable(true);
+                    comboBoxProvincia.setDisable(true);
+
                     Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
 
                     textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
@@ -136,10 +145,48 @@ public class HabitacionesController implements Initializable {
                     List listProvincia = queryProvinciaFindAll.getResultList();
                     comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
 
-                    comboBoxProvincia.setValue(cliente.getProvincia());
                     //Cambiar lo que se muestra en el combobox de provincia
+                    comboBoxProvincia.setCellFactory((ListView<Provincia> l) -> new ListCell<Provincia>() {
+                        @Override
+                        protected void updateItem(Provincia provincia, boolean empty) {
+                            super.updateItem(provincia, empty);
+                            if (provincia == null || empty) {
+                                setText("");
+                            } else {
+                                setText(provincia.getCodigo() + "-" + provincia.getNombre());
+                            }
+                        }
+                    });
+
+                    comboBoxProvincia.setConverter(new StringConverter<Provincia>() {
+                        @Override
+                        public String toString(Provincia provincia) {
+                            if (provincia == null) {
+                                return null;
+                            } else {
+                                return provincia.getCodigo() + "-" + provincia.getNombre();
+                            }
+                        }
+
+                        @Override
+                        public Provincia fromString(String userId) {
+                            return null;
+                        }
+                    });
+
+                    comboBoxProvincia.setValue(cliente.getProvincia());
+                } else {
+                    textFieldNombre.setText("");
+                    textFieldNombre.setDisable(false);
+                    textFieldDireccion.setText("");
+                    textFieldDireccion.setDisable(false);
+                    textFieldLocalidad.setText("");
+                    textFieldLocalidad.setDisable(false);
+                    comboBoxProvincia.setValue(null);
+                    comboBoxProvincia.setDisable(false);
+                    
                 }
-                pararConexion();
+
             }
         }
     }
