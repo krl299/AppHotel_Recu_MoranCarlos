@@ -33,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -83,6 +84,8 @@ public class HabitacionesController implements Initializable {
     private Button btnCancelar;
     @FXML
     private ToggleGroup radioButtons;
+    @FXML
+    private VBox vboxRadBtn;
 
     /**
      * Initializes the controller class.
@@ -101,10 +104,18 @@ public class HabitacionesController implements Initializable {
 
         Optional<ButtonType> result = alerta.showAndWait();
         if (result.get() == ButtonType.YES) {
+            deshabilitar();
             textFieldDNI.setText("");
+            textFieldDNI.setDisable(false);
             textFieldNombre.setText("");
             textFieldDireccion.setText("");
             textFieldLocalidad.setText("");
+            datePickerLlegada.setValue(null);
+            datePickerSalida.setValue(null);
+            spinnerHabitaciones.setValueFactory(null);
+            checkBoxFumador.setSelected(false);
+            comboBoxTipoHab.setValue(null);
+            radioButtons.selectToggle(null);
             comboBoxProvincia.getSelectionModel().clearSelection();
         }
     }
@@ -130,6 +141,7 @@ public class HabitacionesController implements Initializable {
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
 
+                    textFieldDNI.setDisable(true);
                     textFieldNombre.setDisable(true);
                     textFieldDireccion.setDisable(true);
                     textFieldLocalidad.setDisable(true);
@@ -176,17 +188,8 @@ public class HabitacionesController implements Initializable {
 
                     comboBoxProvincia.setValue(cliente.getProvincia());
                 } else {
-                    textFieldNombre.setText("");
-                    textFieldNombre.setDisable(false);
-                    textFieldDireccion.setText("");
-                    textFieldDireccion.setDisable(false);
-                    textFieldLocalidad.setText("");
-                    textFieldLocalidad.setDisable(false);
-                    comboBoxProvincia.setValue(null);
-                    comboBoxProvincia.setDisable(false);
-                    
+                    habilitar();
                 }
-
             }
         }
     }
@@ -207,5 +210,31 @@ public class HabitacionesController implements Initializable {
             DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
         } catch (SQLException ex) {
         }
+    }
+
+    private void deshabilitar() {
+        textFieldNombre.setDisable(true);
+        textFieldDireccion.setDisable(true);
+        textFieldLocalidad.setDisable(true);
+        comboBoxProvincia.setDisable(true);
+        datePickerLlegada.setDisable(true);
+        datePickerSalida.setDisable(true);
+        spinnerHabitaciones.setDisable(true);
+        comboBoxTipoHab.setDisable(true);
+        checkBoxFumador.setDisable(true);
+        vboxRadBtn.setDisable(true);
+    }
+
+    private void habilitar() {
+        textFieldNombre.setDisable(false);
+        textFieldDireccion.setDisable(false);
+        textFieldLocalidad.setDisable(false);
+        comboBoxProvincia.setDisable(false);
+        datePickerLlegada.setDisable(false);
+        datePickerSalida.setDisable(false);
+        spinnerHabitaciones.setDisable(false);
+        comboBoxTipoHab.setDisable(false);
+        checkBoxFumador.setDisable(false);
+        vboxRadBtn.setDisable(false);
     }
 }
