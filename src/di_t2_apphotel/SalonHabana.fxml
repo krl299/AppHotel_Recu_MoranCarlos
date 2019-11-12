@@ -132,7 +132,7 @@
                   <DatePicker fx:id="datePickerFecha" disable="true" prefHeight="25.0" prefWidth="231.0" promptText="Fecha de evento" />
                   <Label fx:id="labelNumDias" disable="true" text="Número de días:" />
                   <TextField fx:id="textFieldDIas" disable="true" prefHeight="25.0" prefWidth="42.0" />
-                  <Label fx:id="labelTipoElegido" disable="true" text="Tipo Elegido:" textFill="#37b3e4">
+                  <Label fx:id="labelTipoElegido" disable="true" text="Tipo Elegido:" textFill="black">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>

@@ -31,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -113,7 +114,18 @@ public class HabitacionesController implements Initializable {
 
     @FXML
     private void onActionListenerCancelar(ActionEvent event) {
-        pararConexion();
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Cerrar ventana");
+
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            if (em != null) {
+                pararConexion();
+            }
+            Stage stage = (Stage) btnCancelar.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML

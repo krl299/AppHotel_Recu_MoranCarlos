@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,7 +116,7 @@ public class SalonHabanaController implements Initializable {
 
         comboBoxTipoCocina.setValue(lista.get(0));
         comboBoxTipoCocina.setItems(FXCollections.observableList(lista));
-
+  
     }
 
     @FXML
@@ -134,22 +133,6 @@ public class SalonHabanaController implements Initializable {
         //Cambiamos el label del tipo de evento
         labelTipoElegido.setText("Tipo Elegido: Banquete");
         labelTipoElegido.setStyle("-fx-text-fill: #37b3e4");
-        
-        ReservasalonPK reserva = new ReservasalonPK();
-
-        if (textFiedlPersonas.getText() != "") {
-            textFiedlPersonas.getText();
-        } else {
-            errorFormato = true;
-        }
-
-        comboBoxTipoCocina.getItems();
-
-        if (reserva.getFecha() != null) {
-            reserva.getFecha();
-        } else {
-            errorFormato = true;
-        }
 
     }
 
@@ -161,10 +144,11 @@ public class SalonHabanaController implements Initializable {
         textFiedlPersonas.setDisable(false);
         datePickerFecha.setDisable(false);
         labelTipoElegido.setDisable(false);
-        
+
         labelTipoElegido.setStyle("-fx-text-fill: #ff5c5c");
         //Cambiamos el label del tipo de evento
         labelTipoElegido.setText("Tipo Elegido: Jornada");
+
     }
 
     @FXML
@@ -184,6 +168,7 @@ public class SalonHabanaController implements Initializable {
         //Cambiamos el label del tipo de evento
         labelTipoElegido.setText("Tipo Elegido: Congreso");
         labelTipoElegido.setStyle("-fx-text-fill: #e6ba37");
+
     }
 
     @FXML
@@ -243,15 +228,37 @@ public class SalonHabanaController implements Initializable {
 
         Optional<ButtonType> result = alerta.showAndWait();
         if (result.get() == ButtonType.YES) {
+            deshabilitar();
             textFieldDNI.setText("");
             textFieldNombre.setText("");
             textFieldDireccion.setText("");
+            textFieldTelefono.setText("");
+            grupoBtn1.selectToggle(null);
+            textFiedlPersonas.setText("");
+            comboBoxTipoCocina.setValue(lista.get(0));
+            checkBoxHabitaciones.setSelected(false);
+            textFieldHab.setText("");
+            datePickerFecha.setValue(null);
+            textFieldDIas.setText("");
+            labelTipoElegido.setText("Tipo Elegido:");
+            labelTipoElegido.setStyle("-fx-text-fill: black");
         }
     }
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Cerrar ventana");
 
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            if (em != null) {
+                pararConexion();
+            }
+            Stage stage = (Stage) btnCancelar.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML
