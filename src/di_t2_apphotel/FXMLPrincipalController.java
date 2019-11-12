@@ -59,5 +59,4 @@ public class FXMLPrincipalController implements Initializable {
         stage.getIcons().add(new Image("recursos/iconrooms.png"));
         stage.show();
     }
-
 }

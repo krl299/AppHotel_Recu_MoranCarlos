@@ -35,6 +35,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -127,7 +128,18 @@ public class HabitacionesController implements Initializable {
 
     @FXML
     private void onActionListenerCancelar(ActionEvent event) {
-        pararConexion();
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Cerrar ventana");
+
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            if (em != null) {
+                pararConexion();
+            }
+            Stage stage = (Stage) btnCancelar.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML
@@ -136,7 +148,7 @@ public class HabitacionesController implements Initializable {
         if (event.getCode().equals(KeyCode.ENTER)) {
             if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))) {
                 iniciarConexion();
-
+                deshabilitar();
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
@@ -153,41 +165,11 @@ public class HabitacionesController implements Initializable {
                     textFieldDireccion.setText(cliente.getDireccion());
                     textFieldLocalidad.setText(cliente.getLocalidad());
 
-                    Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
-                    List listProvincia = queryProvinciaFindAll.getResultList();
-                    comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
-
-                    //Cambiar lo que se muestra en el combobox de provincia
-                    comboBoxProvincia.setCellFactory((ListView<Provincia> l) -> new ListCell<Provincia>() {
-                        @Override
-                        protected void updateItem(Provincia provincia, boolean empty) {
-                            super.updateItem(provincia, empty);
-                            if (provincia == null || empty) {
-                                setText("");
-                            } else {
-                                setText(provincia.getCodigo() + "-" + provincia.getNombre());
-                            }
-                        }
-                    });
-
-                    comboBoxProvincia.setConverter(new StringConverter<Provincia>() {
-                        @Override
-                        public String toString(Provincia provincia) {
-                            if (provincia == null) {
-                                return null;
-                            } else {
-                                return provincia.getCodigo() + "-" + provincia.getNombre();
-                            }
-                        }
-
-                        @Override
-                        public Provincia fromString(String userId) {
-                            return null;
-                        }
-                    });
+                    cargarProvincias();
 
                     comboBoxProvincia.setValue(cliente.getProvincia());
                 } else {
+                    cargarProvincias();
                     habilitar();
                 }
             }
@@ -236,5 +218,40 @@ public class HabitacionesController implements Initializable {
         comboBoxTipoHab.setDisable(false);
         checkBoxFumador.setDisable(false);
         vboxRadBtn.setDisable(false);
+    }
+
+    private void cargarProvincias() {
+        Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
+        List listProvincia = queryProvinciaFindAll.getResultList();
+        comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
+
+        //Cambiar lo que se muestra en el combobox de provincia
+        comboBoxProvincia.setCellFactory((ListView<Provincia> l) -> new ListCell<Provincia>() {
+            @Override
+            protected void updateItem(Provincia provincia, boolean empty) {
+                super.updateItem(provincia, empty);
+                if (provincia == null || empty) {
+                    setText("");
+                } else {
+                    setText(provincia.getCodigo() + "-" + provincia.getNombre());
+                }
+            }
+        });
+
+        comboBoxProvincia.setConverter(new StringConverter<Provincia>() {
+            @Override
+            public String toString(Provincia provincia) {
+                if (provincia == null) {
+                    return null;
+                } else {
+                    return provincia.getCodigo() + "-" + provincia.getNombre();
+                }
+            }
+
+            @Override
+            public Provincia fromString(String userId) {
+                return null;
+            }
+        });
     }
 }
