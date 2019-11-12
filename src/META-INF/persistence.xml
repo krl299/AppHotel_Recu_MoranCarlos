@@ -7,6 +7,10 @@
     <class>entidades.Reservasalon</class>
     <class>di_t2_apphotel.Cliente</class>
     <class>entidades.Cliente</class>
+    <class>recursos.Provincia</class>
+    <class>recursos.Cliente</class>
+    <class>recursos.Reservahabitacion</class>
+    <class>recursos.Reservasalon</class>
     <properties>
       <!--<property name="javax.persistence.jdbc.url" value="jdbc:derby:AppHotel_Bionic;create=true"/>-->
       <property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\\DBHotel;create=true"/>

@@ -1,27 +1,21 @@
 package di_t2_apphotel;
 
 import entidades.Cliente;
-import entidades.ReservasalonPK;
+import entidades.Reservahabitacion;
 import entidades.Reservasalon;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -32,12 +26,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -116,13 +107,14 @@ public class SalonHabanaController implements Initializable {
 
         comboBoxTipoCocina.setValue(lista.get(0));
         comboBoxTipoCocina.setItems(FXCollections.observableList(lista));
-  
+
     }
 
     @FXML
     private void onActionBanquete(ActionEvent event) {
         //Habilitamos y desabilitamos lo que necesitamos
         deshabilitar();
+        comboBoxTipoCocina.setValue(comboBoxTipoCocina.getItems().get(0));
         labelPersona.setDisable(false);
         textFiedlPersonas.setDisable(false);
         labelTipoCocina.setDisable(false);
@@ -140,6 +132,7 @@ public class SalonHabanaController implements Initializable {
     private void onActionJornada(ActionEvent event) {
         //Habilitamos y desabilitamos lo que necesitamos
         deshabilitar();
+        comboBoxTipoCocina.setValue(comboBoxTipoCocina.getItems().get(0));
         labelPersona.setDisable(false);
         textFiedlPersonas.setDisable(false);
         datePickerFecha.setDisable(false);
@@ -155,6 +148,7 @@ public class SalonHabanaController implements Initializable {
     private void onActionCongreso(ActionEvent event) {
         //Habilitamos y desabilitamos lo que necesitamos
         deshabilitar();
+        comboBoxTipoCocina.setValue(comboBoxTipoCocina.getItems().get(0));
         labelPersona.setDisable(false);
         textFiedlPersonas.setDisable(false);
         labelCuantas.setDisable(false);
@@ -185,33 +179,67 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionBtnBuscar(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))) {
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null)) 
+                    && (textFieldDNI.getText().charAt(8)>64 && textFieldDNI.getText().charAt(8)<91)) {
                 iniciarConexion();
 
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
 
+                    deshabilitar();
+
+                    Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
+
+                    textFieldNombre.setText(cliente.getNombre());
+                    textFieldDireccion.setText(cliente.getDireccion());
+                    textFieldTelefono.setText(cliente.getTelefono());
+
                     textFieldNombre.setDisable(true);
                     textFieldDireccion.setDisable(true);
                     textFieldTelefono.setDisable(true);
 
-                    Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
-
-                    textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
-                    textFieldDireccion.setText(cliente.getDireccion());
-                    textFieldTelefono.setText(cliente.getTelefono());
+                    /*
+                    Query queryReserva = em.createQuery("select r from RESERVASALON r where r.dni='"+cliente.getDni()+"'");
+                    List<Reservahabitacion> listaReserva = queryReserva.getResultList();
+                    if(!listaReserva.isEmpty())
+                    {
+                        Reservasalon reservasalon = (Reservasalon) queryReserva.getResultList().get(0);
+                        if(reservasalon.getEvento().equals("Banquete"))
+                            roundBtnBanquete.setSelected(true);
+                        else if(reservasalon.getEvento().equals("Jornada"))
+                            roundBtnJornada.setSelected(true);
+                        else if(reservasalon.getEvento().equals("Congreso"))
+                            roundBtnCongreso.setSelected(true);
+                        
+                        if(roundBtnBanquete.isSelected())
+                        {
+                            
+                        }
+                        else if(roundBtnCongreso.isSelected())
+                        {
+                            
+                        }
+                        else if(roundBtnJornada.isSelected())
+                        {
+                            
+                        }
+                    }
+                     */
                 } else {
                     textFieldNombre.setText("");
-                    textFieldNombre.setDisable(false);
                     textFieldDireccion.setText("");
-                    textFieldDireccion.setDisable(false);
-                    comboBoxTipoCocina.setValue(null);
                     textFieldTelefono.setText("");
+                    textFieldNombre.setDisable(false);
+                    textFieldDireccion.setDisable(false);
                     textFieldTelefono.setDisable(false);
                 }
+
+                comboBoxTipoCocina.setValue(comboBoxTipoCocina.getItems().get(0));
+                textFieldDNI.setDisable(true);
+                grupo_rb.setDisable(false);
             }
-            grupo_rb.setDisable(false);
+
         }
     }
 
@@ -242,6 +270,7 @@ public class SalonHabanaController implements Initializable {
         Optional<ButtonType> result = alerta.showAndWait();
         if (result.get() == ButtonType.YES) {
             deshabilitar();
+            textFieldDNI.setDisable(false);
             textFieldDNI.setText("");
             textFieldNombre.setText("");
             textFieldDireccion.setText("");
@@ -255,6 +284,7 @@ public class SalonHabanaController implements Initializable {
             textFieldDIas.setText("");
             labelTipoElegido.setText("Tipo Elegido:");
             labelTipoElegido.setStyle("-fx-text-fill: black");
+            grupo_rb.setDisable(true);
         }
     }
 
@@ -283,6 +313,7 @@ public class SalonHabanaController implements Initializable {
     }
 
     public void deshabilitar() {
+
         labelPersona.setDisable(true);
         textFiedlPersonas.setDisable(true);
         comboBoxTipoCocina.setDisable(true);

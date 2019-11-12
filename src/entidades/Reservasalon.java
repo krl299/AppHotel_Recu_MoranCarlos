@@ -9,18 +9,22 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author usuario
+ * @author scorp
  */
 @Entity
 @Table(name = "RESERVASALON")
@@ -28,9 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Reservasalon.findAll", query = "SELECT r FROM Reservasalon r")
     , @NamedQuery(name = "Reservasalon.findById", query = "SELECT r FROM Reservasalon r WHERE r.id = :id")
-    , @NamedQuery(name = "Reservasalon.findByDni", query = "SELECT r FROM Reservasalon r WHERE r.reservasalonPK.dni = :dni")
     , @NamedQuery(name = "Reservasalon.findByEvento", query = "SELECT r FROM Reservasalon r WHERE r.evento = :evento")
-    , @NamedQuery(name = "Reservasalon.findByFecha", query = "SELECT r FROM Reservasalon r WHERE r.reservasalonPK.fecha = :fecha")
+    , @NamedQuery(name = "Reservasalon.findByFecha", query = "SELECT r FROM Reservasalon r WHERE r.fecha = :fecha")
     , @NamedQuery(name = "Reservasalon.findByNPersonas", query = "SELECT r FROM Reservasalon r WHERE r.nPersonas = :nPersonas")
     , @NamedQuery(name = "Reservasalon.findByComida", query = "SELECT r FROM Reservasalon r WHERE r.comida = :comida")
     , @NamedQuery(name = "Reservasalon.findByHabitaciones", query = "SELECT r FROM Reservasalon r WHERE r.habitaciones = :habitaciones")
@@ -38,13 +41,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Reservasalon implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ReservasalonPK reservasalonPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
     @Column(name = "EVENTO")
     private String evento;
+    @Basic(optional = false)
+    @Column(name = "FECHA")
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     @Basic(optional = false)
     @Column(name = "N_PERSONAS")
     private int nPersonas;
@@ -54,40 +61,28 @@ public class Reservasalon implements Serializable {
     private Integer habitaciones;
     @Column(name = "N_DIAS")
     private Integer nDias;
-    @JoinColumn(name = "DNI", referencedColumnName = "DNI", insertable = false, updatable = false)
+    @JoinColumn(name = "DNI", referencedColumnName = "DNI")
     @ManyToOne(optional = false)
-    private Cliente cliente;
+    private Cliente dni;
 
     public Reservasalon() {
     }
 
-    public Reservasalon(ReservasalonPK reservasalonPK) {
-        this.reservasalonPK = reservasalonPK;
+    public Reservasalon(Integer id) {
+        this.id = id;
     }
 
-    public Reservasalon(ReservasalonPK reservasalonPK, int id, int nPersonas) {
-        this.reservasalonPK = reservasalonPK;
+    public Reservasalon(Integer id, Date fecha, int nPersonas) {
         this.id = id;
+        this.fecha = fecha;
         this.nPersonas = nPersonas;
     }
 
-    public Reservasalon(String dni, Date fecha) {
-        this.reservasalonPK = new ReservasalonPK(dni, fecha);
-    }
-
-    public ReservasalonPK getReservasalonPK() {
-        return reservasalonPK;
-    }
-
-    public void setReservasalonPK(ReservasalonPK reservasalonPK) {
-        this.reservasalonPK = reservasalonPK;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -97,6 +92,14 @@ public class Reservasalon implements Serializable {
 
     public void setEvento(String evento) {
         this.evento = evento;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public int getNPersonas() {
@@ -131,18 +134,18 @@ public class Reservasalon implements Serializable {
         this.nDias = nDias;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Cliente getDni() {
+        return dni;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setDni(Cliente dni) {
+        this.dni = dni;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (reservasalonPK != null ? reservasalonPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -153,7 +156,7 @@ public class Reservasalon implements Serializable {
             return false;
         }
         Reservasalon other = (Reservasalon) object;
-        if ((this.reservasalonPK == null && other.reservasalonPK != null) || (this.reservasalonPK != null && !this.reservasalonPK.equals(other.reservasalonPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -161,7 +164,7 @@ public class Reservasalon implements Serializable {
 
     @Override
     public String toString() {
-        return "di_t2_apphotel.Reservasalon[ reservasalonPK=" + reservasalonPK + " ]";
+        return "entidades.Reservasalon[ id=" + id + " ]";
     }
     
 }

@@ -29,6 +29,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
@@ -93,7 +94,7 @@ public class HabitacionesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        spinnerHabitaciones.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
     }
 
     @FXML
@@ -118,12 +119,40 @@ public class HabitacionesController implements Initializable {
             comboBoxTipoHab.setValue(null);
             radioButtons.selectToggle(null);
             comboBoxProvincia.getSelectionModel().clearSelection();
+            //spinnerHabitaciones.);
         }
     }
 
     @FXML
     private void onActionListenerAceptar(ActionEvent event) {
-        pararConexion();
+        
+        Cliente cliente = new Cliente();
+        cliente.setNombre(textFieldNombre.getText().toString());
+        cliente.setDni(textFieldDNI.getText().toString());
+        cliente.setDireccion(textFieldDireccion.getText().toString());
+        cliente.setLocalidad(textFieldLocalidad.getText().toString());
+        cliente.setProvincia(comboBoxProvincia.getValue());
+        //scliente.setApellidos(tex);
+        
+        iniciarConexion();
+        
+        em.persist(cliente);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+        
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?",
+                ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText("Enviar Reserva");
+
+        Optional<ButtonType> result = alerta.showAndWait();
+        if (result.get() == ButtonType.YES) {
+            if (em != null) {
+                pararConexion();
+            }
+            Stage stage = (Stage) btnAceptar.getScene().getWindow();
+            stage.close();
+        }
+
     }
 
     @FXML
@@ -146,14 +175,14 @@ public class HabitacionesController implements Initializable {
     private void onActionBtnBuscar(KeyEvent event) {
 
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))) {
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))
+                    && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
                 iniciarConexion();
                 deshabilitar();
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
                 if (!listaCliente.isEmpty()) {
 
-                    textFieldDNI.setDisable(true);
                     textFieldNombre.setDisable(true);
                     textFieldDireccion.setDisable(true);
                     textFieldLocalidad.setDisable(true);
@@ -161,17 +190,23 @@ public class HabitacionesController implements Initializable {
 
                     Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
 
-                    textFieldNombre.setText(cliente.getNombre() + " " + cliente.getApellidos());
+                    textFieldNombre.setText(cliente.getNombre());
                     textFieldDireccion.setText(cliente.getDireccion());
                     textFieldLocalidad.setText(cliente.getLocalidad());
 
                     cargarProvincias();
-
                     comboBoxProvincia.setValue(cliente.getProvincia());
+                    habilitar();
+
                 } else {
                     cargarProvincias();
+                    textFieldNombre.setDisable(false);
+                    textFieldDireccion.setDisable(false);
+                    textFieldLocalidad.setDisable(false);
+                    comboBoxProvincia.setDisable(false);
                     habilitar();
                 }
+                textFieldDNI.setDisable(true);
             }
         }
     }
@@ -208,10 +243,6 @@ public class HabitacionesController implements Initializable {
     }
 
     private void habilitar() {
-        textFieldNombre.setDisable(false);
-        textFieldDireccion.setDisable(false);
-        textFieldLocalidad.setDisable(false);
-        comboBoxProvincia.setDisable(false);
         datePickerLlegada.setDisable(false);
         datePickerSalida.setDisable(false);
         spinnerHabitaciones.setDisable(false);
