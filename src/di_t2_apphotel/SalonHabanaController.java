@@ -1,15 +1,9 @@
 package di_t2_apphotel;
 
 import entidades.Cliente;
-import entidades.Reservahabitacion;
-import entidades.Reservasalon;
 import java.net.URL;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -32,7 +26,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 /**
@@ -43,7 +36,6 @@ import javax.persistence.Query;
 public class SalonHabanaController implements Initializable {
 
     private EntityManager em;
-    private EntityManagerFactory emf;
     private boolean errorFormato = false;
     private ArrayList<String> lista = new ArrayList<String>();
 
@@ -179,9 +171,8 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionBtnBuscar(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null)) 
-                    && (textFieldDNI.getText().charAt(8)>64 && textFieldDNI.getText().charAt(8)<91)) {
-                iniciarConexion();
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))
+                    && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
 
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
@@ -199,33 +190,6 @@ public class SalonHabanaController implements Initializable {
                     textFieldDireccion.setDisable(true);
                     textFieldTelefono.setDisable(true);
 
-                    /*
-                    Query queryReserva = em.createQuery("select r from RESERVASALON r where r.dni='"+cliente.getDni()+"'");
-                    List<Reservahabitacion> listaReserva = queryReserva.getResultList();
-                    if(!listaReserva.isEmpty())
-                    {
-                        Reservasalon reservasalon = (Reservasalon) queryReserva.getResultList().get(0);
-                        if(reservasalon.getEvento().equals("Banquete"))
-                            roundBtnBanquete.setSelected(true);
-                        else if(reservasalon.getEvento().equals("Jornada"))
-                            roundBtnJornada.setSelected(true);
-                        else if(reservasalon.getEvento().equals("Congreso"))
-                            roundBtnCongreso.setSelected(true);
-                        
-                        if(roundBtnBanquete.isSelected())
-                        {
-                            
-                        }
-                        else if(roundBtnCongreso.isSelected())
-                        {
-                            
-                        }
-                        else if(roundBtnJornada.isSelected())
-                        {
-                            
-                        }
-                    }
-                     */
                 } else {
                     textFieldNombre.setText("");
                     textFieldDireccion.setText("");
@@ -240,24 +204,6 @@ public class SalonHabanaController implements Initializable {
                 grupo_rb.setDisable(false);
             }
 
-        }
-    }
-
-    private void iniciarConexion() {
-        Map<String, String> emfProperties = new HashMap<String, String>();
-        emfProperties.put("javax.persistence.jdbc.user", "APP");
-        emfProperties.put("javax.persistence.jdbc.password", "App");
-        emfProperties.put("javax.persistence.schema-generation.database.action", "create");
-        emf = Persistence.createEntityManagerFactory("DI_T2_AppHotelPU", emfProperties);
-        em = emf.createEntityManager();
-    }
-
-    private void pararConexion() {
-        em.close();
-        emf.close();
-        try {
-            DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
-        } catch (SQLException ex) {
         }
     }
 
@@ -296,9 +242,6 @@ public class SalonHabanaController implements Initializable {
 
         Optional<ButtonType> result = alerta.showAndWait();
         if (result.get() == ButtonType.YES) {
-            if (em != null) {
-                pararConexion();
-            }
             Stage stage = (Stage) btnCancelar.getScene().getWindow();
             stage.close();
         }
@@ -326,4 +269,9 @@ public class SalonHabanaController implements Initializable {
         textFieldHab.setDisable(true);
         labelTipoCocina.setDisable(true);
     }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+    
 }

@@ -80,7 +80,7 @@
             </Label>
             <HBox>
                <children>
-                  <DatePicker fx:id="datePickerLlegada" disable="true" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de llegada">
+                  <DatePicker fx:id="datePickerLlegada" disable="true" onAction="#onActionFechaLlegada" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de llegada">
                      <HBox.margin>
                         <Insets right="70.0" />
                      </HBox.margin>
