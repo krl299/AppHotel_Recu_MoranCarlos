@@ -27,8 +27,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -135,31 +133,31 @@ public class HabitacionesController implements Initializable {
         errorFormato = false;
 
         if (!textFieldDNI.getText().equals("") && textFieldDNI.getText() != null) {
-            cliente.setDni(textFieldDNI.getText().toString());
+            cliente.setDni(textFieldDNI.getText());
 
             if (!textFieldNombre.getText().equals("") && textFieldNombre.getText() != null) {
-                cliente.setNombre(textFieldNombre.getText().toString());
+                cliente.setNombre(textFieldNombre.getText());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un nombre");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
             if (!textFieldDireccion.getText().equals("") && textFieldDireccion != null) {
-                cliente.setDireccion(textFieldDireccion.getText().toString());
+                cliente.setDireccion(textFieldDireccion.getText());
 
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una direccion");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
             if (!textFieldLocalidad.getText().equals("") && textFieldLocalidad != null) {
-                cliente.setLocalidad(textFieldLocalidad.getText().toString());
+                cliente.setLocalidad(textFieldLocalidad.getText());
 
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la localidad");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
@@ -168,7 +166,7 @@ public class HabitacionesController implements Initializable {
 
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una provincia");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
@@ -180,7 +178,7 @@ public class HabitacionesController implements Initializable {
                 habitacion.setLlegada(llegada);
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de llegada");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
@@ -192,11 +190,11 @@ public class HabitacionesController implements Initializable {
                 habitacion.setSalida(salida);
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de salida");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
-            habitacion.setNHabitaciones(spinnerHabitaciones.getValue().intValue());
+            habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
             /*
             if (!comboBoxTipoHab.getValue().toString().isEmpty() && comboBoxTipoHab.getValue() != null) {
@@ -204,7 +202,7 @@ public class HabitacionesController implements Initializable {
                 errorFormato = false;
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
              */
@@ -224,7 +222,7 @@ public class HabitacionesController implements Initializable {
                 }
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un Régimen");
-                alerta.show();
+                alerta.showAndWait();
                 errorFormato = true;
             }
 
@@ -258,7 +256,7 @@ public class HabitacionesController implements Initializable {
 
         } else {
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
-            alerta.show();
+            alerta.showAndWait();
             errorFormato = true;
         }
     }
@@ -304,6 +302,13 @@ public class HabitacionesController implements Initializable {
                     } else {
                         comboBoxProvincia.setDisable(false);
                     }
+
+                    if (cliente.getLocalidad() != null) {
+                        textFieldLocalidad.setText(cliente.getLocalidad());
+                    } else {
+                        textFieldLocalidad.setDisable(false);
+                    }
+
                     habilitar();
 
                 } else {
