@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,8 @@ public class HabitacionesController implements Initializable {
 
     private EntityManager em;
     private boolean errorFormato = false;
+    private ArrayList<String> lista = new ArrayList<String>();
+    private Cliente cliente;
 
     @FXML
     private TextField textFieldDNI;
@@ -95,6 +98,11 @@ public class HabitacionesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         spinnerHabitaciones.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
         spinnerHabitaciones.setEditable(false);
+        lista.add("Individual");
+        lista.add("Doble Individual");
+        lista.add("Doble");
+        lista.add("Matrimonio");
+        comboBoxTipoHab.setItems(FXCollections.observableList(lista));
     }
 
     @FXML
@@ -127,7 +135,6 @@ public class HabitacionesController implements Initializable {
     @FXML
     private void onActionListenerAceptar(ActionEvent event) {
 
-        Cliente cliente = new Cliente();
         Alert alerta;
         Reservahabitacion habitacion = new Reservahabitacion();
         errorFormato = false;
@@ -196,16 +203,14 @@ public class HabitacionesController implements Initializable {
 
             habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
-            /*
             if (!comboBoxTipoHab.getValue().toString().isEmpty() && comboBoxTipoHab.getValue() != null) {
                 habitacion.setTipo(comboBoxTipoHab.getValue().toString());
-                errorFormato = false;
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");
                 alerta.showAndWait();
                 errorFormato = true;
             }
-             */
+
             if (checkBoxFumador.isSelected()) {
                 habitacion.setFumador("Fumador");
             } else {
@@ -290,7 +295,7 @@ public class HabitacionesController implements Initializable {
                     textFieldLocalidad.setDisable(true);
                     comboBoxProvincia.setDisable(true);
 
-                    Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
+                    cliente = (Cliente) queryCliente.getResultList().get(0);
 
                     textFieldNombre.setText(cliente.getNombre());
                     textFieldDireccion.setText(cliente.getDireccion());

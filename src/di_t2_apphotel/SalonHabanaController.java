@@ -43,6 +43,7 @@ public class SalonHabanaController implements Initializable {
     private EntityManager em;
     private boolean errorFormato = false;
     private ArrayList<String> lista = new ArrayList<String>();
+    private Cliente cliente;
 
     @FXML
     private TextField textFieldDNI;
@@ -183,7 +184,7 @@ public class SalonHabanaController implements Initializable {
 
                     deshabilitar();
 
-                    Cliente cliente = (Cliente) queryCliente.getResultList().get(0);
+                    cliente = (Cliente) queryCliente.getResultList().get(0);
 
                     textFieldNombre.setText(cliente.getNombre());
                     textFieldDireccion.setText(cliente.getDireccion());
@@ -259,7 +260,6 @@ public class SalonHabanaController implements Initializable {
     private void onActionAceptar(ActionEvent event) {
         errorFormato = false;
         Alert alerta;
-        Cliente cliente = new Cliente();
         Reservasalon salon = new Reservasalon();
 
         if (textFieldDNI.getText().isEmpty() || textFieldDNI.getText() == null) {
@@ -291,10 +291,12 @@ public class SalonHabanaController implements Initializable {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
             alerta.showAndWait();
+        } else if (!textFieldTelefono.getText().matches("[0-9]*")) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
+            alerta.showAndWait();
         } else {
-            if (textFieldTelefono.getText().matches("[0-9]*")) {
-                cliente.setTelefono(textFieldTelefono.getText());
-            }
+            cliente.setTelefono(textFieldTelefono.getText());
         }
 
         if (grupoBtn1.getSelectedToggle() == null) {
