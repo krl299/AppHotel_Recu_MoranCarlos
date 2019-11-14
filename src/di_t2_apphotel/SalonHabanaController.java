@@ -1,8 +1,14 @@
 package di_t2_apphotel;
 
 import entidades.Cliente;
+import entidades.Reservasalon;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -25,7 +31,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 /**
@@ -188,7 +193,12 @@ public class SalonHabanaController implements Initializable {
 
                     textFieldNombre.setDisable(true);
                     textFieldDireccion.setDisable(true);
-                    textFieldTelefono.setDisable(true);
+
+                    if (cliente.getTelefono() == null) {
+                        textFieldTelefono.setDisable(false);
+                    } else {
+                        textFieldTelefono.setDisable(true);
+                    }
 
                 } else {
                     textFieldNombre.setText("");
@@ -249,6 +259,155 @@ public class SalonHabanaController implements Initializable {
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
+        errorFormato = false;
+        Alert alerta;
+        Cliente cliente = new Cliente();
+        Reservasalon salon = new Reservasalon();
+
+        if (textFieldDNI.getText().toString().isEmpty() || textFieldDNI.getText() == null) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un DNI");
+            alerta.showAndWait();
+        } else {
+            cliente.setDni(textFieldDNI.getText().toString());
+            salon.setDni(cliente);
+        }
+
+        if (textFieldNombre.getText().toString().isEmpty() || textFieldNombre.getText() == null) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un  nombre");
+            alerta.showAndWait();
+        } else {
+            cliente.setNombre(textFieldNombre.getText().toString());
+        }
+
+        if (textFieldDireccion.getText().toString().isEmpty() || textFieldDireccion.getText() == null) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una dirección");
+            alerta.showAndWait();
+        } else {
+            cliente.setDireccion(textFieldDireccion.getText().toString());
+        }
+
+        if (textFieldTelefono.getText().toString().isEmpty() || textFieldTelefono.getText() == null) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
+            alerta.showAndWait();
+        } else {
+            if (textFieldTelefono.getText().matches("[0-9]*")) {
+                cliente.setTelefono(textFieldTelefono.getText().toString());
+            }
+        }
+
+        if (grupoBtn1.getSelectedToggle() == null) {
+            errorFormato = true;
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
+            alerta.showAndWait();
+        } else {
+            /*Comprobación del radio button Banquete*/
+            if (roundBtnBanquete.isSelected()) {
+                salon.setEvento("Banquete");
+
+                if ((textFiedlPersonas.getText().toString().isEmpty() || textFiedlPersonas.getText() == null)
+                        && (Integer.parseInt(textFiedlPersonas.getText().toString()) <= 100
+                        && Integer.parseInt(textFiedlPersonas.getText().toString()) > 0)) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max: 100)");
+                    alerta.showAndWait();
+                } else {
+                    salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText().toString()));
+                }
+
+                salon.setComida(comboBoxTipoCocina.getValue().toString());
+
+                if (datePickerFecha.getValue() == null || datePickerFecha.getValue().toString().isEmpty()) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
+                    alerta.showAndWait();
+                } else {
+                    LocalDate localDate = datePickerFecha.getValue();
+                    ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+                    Instant instant = zonedDateTime.toInstant();
+                    Date date = Date.from(instant);
+                    salon.setFecha(date);
+
+                }
+
+            } /*Comprobación del radio button Jornada*/ else if (roundBtnJornada.isSelected()) {
+                salon.setEvento("Jornada");
+
+                if ((textFiedlPersonas.getText().toString().isEmpty() || textFiedlPersonas.getText() == null)
+                        && (Integer.parseInt(textFiedlPersonas.getText().toString()) <= 50
+                        && Integer.parseInt(textFiedlPersonas.getText().toString()) > 0)) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max: 50)");
+                    alerta.showAndWait();
+                } else {
+                    salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText().toString()));
+                }
+
+                if (datePickerFecha.getValue() == null) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
+                    alerta.showAndWait();
+                } else {
+                    datePickerFecha.getValue();
+                }
+            } /*Comprobación del radio button Congreso*/ else {
+                salon.setEvento("Congreso");
+
+                if ((textFiedlPersonas.getText().toString().isEmpty() || textFiedlPersonas.getText() == null)
+                        && (Integer.parseInt(textFiedlPersonas.getText().toString()) <= 50
+                        && Integer.parseInt(textFiedlPersonas.getText().toString()) > 0)) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
+                    alerta.showAndWait();
+                } else {
+                    salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText().toString()));
+                }
+
+                if (checkBoxHabitaciones.isSelected()) {
+                    if (textFieldHab.getText().equals("")) {
+                        errorFormato = true;
+                        alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número de habitaciones");
+                        alerta.showAndWait();
+                    } else {
+                        textFieldHab.getText();
+                    }
+                }
+
+                if (datePickerFecha.getValue() == null) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
+                    alerta.showAndWait();
+                } else {
+                    datePickerFecha.getValue();
+                }
+
+                if (textFieldDIas.getText().equals("")) {
+                    errorFormato = true;
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número de días");
+                    alerta.showAndWait();
+                } else {
+                    textFieldDIas.getText();
+                }
+            }
+        }
+        if (!errorFormato) {
+            em.merge(cliente);
+            em.persist(salon);
+            em.getTransaction().begin();
+            em.getTransaction().commit();
+
+            alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
+            alerta.setHeaderText("Enviar Reserva");
+
+            Optional<ButtonType> result = alerta.showAndWait();
+            if (result.get() == ButtonType.YES) {
+                Stage stage = (Stage) btnAceptar.getScene().getWindow();
+                stage.close();
+            }
+        }
     }
 
     public DatePicker getfecha() {
@@ -273,5 +432,5 @@ public class SalonHabanaController implements Initializable {
     public void setEm(EntityManager em) {
         this.em = em;
     }
-    
+
 }

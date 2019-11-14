@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author scorp
+ * @author Usuario
  */
 @Entity
 @Table(name = "CLIENTE")
@@ -56,7 +56,7 @@ public class Cliente implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dni")
     private Collection<Reservahabitacion> reservahabitacionCollection;
     @JoinColumn(name = "PROVINCIA", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Provincia provincia;
 
     public Cliente() {
