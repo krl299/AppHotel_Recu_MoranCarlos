@@ -237,21 +237,22 @@ public class HabitacionesController implements Initializable {
                     alerta.setHeaderText("Enviar Reserva");
                     Optional<ButtonType> result = alerta.showAndWait();
 
-                    em.merge(cliente);
-                    em.persist(habitacion);
-                    em.getTransaction().begin();
-                    em.getTransaction().commit();
-
                     if (result.get() == ButtonType.YES) {
                         Stage stage = (Stage) btnAceptar.getScene().getWindow();
+
+                        em.merge(cliente);
+                        em.persist(habitacion);
+                        em.getTransaction().begin();
+                        em.getTransaction().commit();
+
                         stage.close();
                     }
 
-                }
-                catch(RollbackException e)
-                {
+                } catch (RollbackException e) {
                     em.getTransaction().rollback();
                     alerta = new Alert(Alert.AlertType.INFORMATION, "Error al guardar los datos. Inténtelo de nuevo");
+                    alerta.setContentText(e.getLocalizedMessage());
+                    alerta.showAndWait();
                 }
             }
 
