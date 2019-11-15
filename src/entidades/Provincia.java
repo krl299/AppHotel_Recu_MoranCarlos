@@ -8,7 +8,6 @@ package entidades;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author usuario
+ * @author Usuario
  */
 @Entity
 @Table(name = "PROVINCIA")
@@ -46,7 +45,7 @@ public class Provincia implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincia")
+    @OneToMany(mappedBy = "provincia")
     private Collection<Cliente> clienteCollection;
 
     public Provincia() {
@@ -116,7 +115,7 @@ public class Provincia implements Serializable {
 
     @Override
     public String toString() {
-        return "di_t2_apphotel.Provincia[ id=" + id + " ]";
+        return "entidades.Provincia[ id=" + id + " ]";
     }
-   
+    
 }

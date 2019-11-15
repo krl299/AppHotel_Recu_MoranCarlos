@@ -9,6 +9,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="617.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.SalonHabanaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="617.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.SalonHabanaController">
    <children>
       <VBox>
          <children>
@@ -33,9 +34,15 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="DNI/CIF:" />
-                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="25.0" prefWidth="174.0" />
+                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="25.0" prefWidth="174.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el DNI y pulsa ENTER" />
+                     </tooltip></TextField>
                   <Label text="Nombre:" />
-                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="281.0" />
+                  <TextField fx:id="textFieldNombre" disable="true" prefHeight="25.0" prefWidth="281.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el nombre" />
+                     </tooltip></TextField>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="20.0" right="20.0" />
@@ -48,9 +55,15 @@
                         <Insets bottom="5.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="textFieldDireccion" disable="true" prefHeight="25.0" prefWidth="256.0" />
+                  <TextField fx:id="textFieldDireccion" disable="true" prefHeight="25.0" prefWidth="256.0">
+                     <tooltip>
+                        <Tooltip text="Introduce la dirección" />
+                     </tooltip></TextField>
                   <Label text="Teléfono:" />
-                  <TextField fx:id="textFieldTelefono" disable="true" prefHeight="25.0" prefWidth="189.0" />
+                  <TextField fx:id="textFieldTelefono" disable="true" prefHeight="25.0" prefWidth="189.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el teléfono" />
+                     </tooltip></TextField>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
@@ -73,14 +86,14 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                  <VBox fx:id="grupo_rb" alignment="CENTER_LEFT" disable="true" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
                         <Label text="Tipo de evento">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <RadioButton fx:id="roundBtnBanquete" mnemonicParsing="false" onAction="#onActionBanquete" selected="true" text="Banquete">
+                        <RadioButton fx:id="roundBtnBanquete" mnemonicParsing="false" onAction="#onActionBanquete" text="Banquete">
                            <toggleGroup>
                               <ToggleGroup fx:id="grupoBtn1" />
                            </toggleGroup>
@@ -96,14 +109,20 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="465.0" spacing="10.0">
                            <children>
-                              <Label text="Numero de Personas:" />
-                              <TextField fx:id="textFiedlPersonas" prefHeight="25.0" prefWidth="41.0" />
-                              <Label fx:id="labelTipoCocina" text="Tipo de Cocina:">
+                              <Label fx:id="labelPersona" disable="true" text="Numero de Personas:" />
+                              <TextField fx:id="textFiedlPersonas" disable="true" prefHeight="25.0" prefWidth="41.0">
+                                 <tooltip>
+                                    <Tooltip text="Introduce el número de personas" />
+                                 </tooltip></TextField>
+                              <Label fx:id="labelTipoCocina" disable="true" text="Tipo de Cocina:">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox fx:id="comboBoxTipoCocina" prefHeight="25.0" prefWidth="176.0" />
+                              <ComboBox fx:id="comboBoxTipoCocina" disable="true" prefHeight="25.0" prefWidth="176.0">
+                                 <tooltip>
+                                    <Tooltip text="Cocina a elegir (Banquete)" />
+                                 </tooltip></ComboBox>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -117,7 +136,10 @@
                                     <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="textFieldHab" disable="true" prefHeight="25.0" prefWidth="39.0" />
+                              <TextField fx:id="textFieldHab" disable="true" prefHeight="25.0" prefWidth="39.0">
+                                 <tooltip>
+                                    <Tooltip text="Introduce el númeroo de habitaciones" />
+                                 </tooltip></TextField>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -129,10 +151,16 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <DatePicker fx:id="datePickerFecha" prefHeight="25.0" prefWidth="231.0" promptText="Fecha de evento" />
+                  <DatePicker fx:id="datePickerFecha" disable="true" prefHeight="25.0" prefWidth="231.0" promptText="Fecha de evento">
+                     <tooltip>
+                        <Tooltip text="Fecha del evento" />
+                     </tooltip></DatePicker>
                   <Label fx:id="labelNumDias" disable="true" text="Número de días:" />
-                  <TextField fx:id="textFieldDIas" disable="true" prefHeight="25.0" prefWidth="42.0" />
-                  <Label fx:id="labelTipoElegido" text="Tipo Elegido: Banquete" textFill="#37b3e4">
+                  <TextField fx:id="textFieldDIas" disable="true" prefHeight="25.0" prefWidth="42.0">
+                     <tooltip>
+                        <Tooltip text="Duración del evento" />
+                     </tooltip></TextField>
+                  <Label fx:id="labelTipoElegido" disable="true" text="Tipo Elegido:" textFill="black">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -157,20 +185,29 @@
       </ImageView>
       <GridPane hgap="10.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="95.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="404.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="91.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="419.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="82.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Limpiar" GridPane.halignment="CENTER" />
-            <Button mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#onActionLimpiar" text="Limpiar" GridPane.halignment="CENTER">
+               <tooltip>
+                  <Tooltip text="Limpiar Datos" />
+               </tooltip></Button>
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionCancelar" text="Cancelar" GridPane.columnIndex="2">
+               <tooltip>
+                  <Tooltip text="Cancelar y volver al Menú" />
+               </tooltip></Button>
+            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#onActionAceptar" text="Aceptar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Enviar Reserva" />
+               </tooltip>
             </Button>
          </children>
          <VBox.margin>

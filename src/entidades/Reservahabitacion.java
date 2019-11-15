@@ -9,8 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,15 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author usuario
+ * @author Usuario
  */
 @Entity
 @Table(name = "RESERVAHABITACION")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Reservahabitacion.findAll", query = "SELECT r FROM Reservahabitacion r")
-    , @NamedQuery(name = "Reservahabitacion.findById", query = "SELECT r FROM Reservahabitacion r WHERE r.reservahabitacionPK.id = :id")
-    , @NamedQuery(name = "Reservahabitacion.findByDni", query = "SELECT r FROM Reservahabitacion r WHERE r.reservahabitacionPK.dni = :dni")
+    , @NamedQuery(name = "Reservahabitacion.findById", query = "SELECT r FROM Reservahabitacion r WHERE r.id = :id")
     , @NamedQuery(name = "Reservahabitacion.findByLlegada", query = "SELECT r FROM Reservahabitacion r WHERE r.llegada = :llegada")
     , @NamedQuery(name = "Reservahabitacion.findBySalida", query = "SELECT r FROM Reservahabitacion r WHERE r.salida = :salida")
     , @NamedQuery(name = "Reservahabitacion.findByNHabitaciones", query = "SELECT r FROM Reservahabitacion r WHERE r.nHabitaciones = :nHabitaciones")
@@ -40,8 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Reservahabitacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ReservahabitacionPK reservahabitacionPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "LLEGADA")
     @Temporal(TemporalType.DATE)
@@ -59,34 +63,30 @@ public class Reservahabitacion implements Serializable {
     private String fumador;
     @Column(name = "REGIMEN")
     private String regimen;
-    @JoinColumn(name = "DNI", referencedColumnName = "DNI", insertable = false, updatable = false)
+    @JoinColumn(name = "DNI", referencedColumnName = "DNI")
     @ManyToOne(optional = false)
-    private Cliente cliente;
+    private Cliente dni;
 
     public Reservahabitacion() {
     }
 
-    public Reservahabitacion(ReservahabitacionPK reservahabitacionPK) {
-        this.reservahabitacionPK = reservahabitacionPK;
+    public Reservahabitacion(Integer id) {
+        this.id = id;
     }
 
-    public Reservahabitacion(ReservahabitacionPK reservahabitacionPK, Date llegada, Date salida, int nHabitaciones) {
-        this.reservahabitacionPK = reservahabitacionPK;
+    public Reservahabitacion(Integer id, Date llegada, Date salida, int nHabitaciones) {
+        this.id = id;
         this.llegada = llegada;
         this.salida = salida;
         this.nHabitaciones = nHabitaciones;
     }
 
-    public Reservahabitacion(int id, String dni) {
-        this.reservahabitacionPK = new ReservahabitacionPK(id, dni);
+    public Integer getId() {
+        return id;
     }
 
-    public ReservahabitacionPK getReservahabitacionPK() {
-        return reservahabitacionPK;
-    }
-
-    public void setReservahabitacionPK(ReservahabitacionPK reservahabitacionPK) {
-        this.reservahabitacionPK = reservahabitacionPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getLlegada() {
@@ -137,18 +137,18 @@ public class Reservahabitacion implements Serializable {
         this.regimen = regimen;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Cliente getDni() {
+        return dni;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setDni(Cliente dni) {
+        this.dni = dni;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (reservahabitacionPK != null ? reservahabitacionPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -159,7 +159,7 @@ public class Reservahabitacion implements Serializable {
             return false;
         }
         Reservahabitacion other = (Reservahabitacion) object;
-        if ((this.reservahabitacionPK == null && other.reservahabitacionPK != null) || (this.reservahabitacionPK != null && !this.reservahabitacionPK.equals(other.reservahabitacionPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -167,7 +167,7 @@ public class Reservahabitacion implements Serializable {
 
     @Override
     public String toString() {
-        return "di_t2_apphotel.Reservahabitacion[ reservahabitacionPK=" + reservahabitacionPK + " ]";
+        return "entidades.Reservahabitacion[ id=" + id + " ]";
     }
     
 }

@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" style="-fx-background-color: #dfe8f7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="di_t2_apphotel.HabitacionesController">
    <children>
       <Label text="Datos del cliente" underline="true">
          <font>
@@ -30,13 +31,15 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="DNI:" HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="25.0" prefWidth="124.0" />
+                  <TextField fx:id="textFieldDNI" onKeyPressed="#onActionBtnBuscar" prefHeight="27.0" prefWidth="124.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el DNI y pulsa Enter" />
+                     </tooltip></TextField>
                   <Label text="Nombre:" />
                   <TextField fx:id="textFieldNombre" disable="true" prefHeight="27.0" prefWidth="296.0">
-                     <padding>
-                        <Insets bottom="5.0" top="5.0" />
-                     </padding>
-                  </TextField>
+                     <tooltip>
+                        <Tooltip text="Introduce el nombre" />
+                     </tooltip></TextField>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
@@ -49,15 +52,24 @@
                      <HBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </HBox.margin>
+                     <tooltip>
+                        <Tooltip text="Introduce la dirección" />
+                     </tooltip>
                   </TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="Localidad:" />
-                  <TextField fx:id="textFieldLocalidad" disable="true" prefHeight="25.0" prefWidth="176.0" />
+                  <TextField fx:id="textFieldLocalidad" disable="true" prefHeight="25.0" prefWidth="176.0">
+                     <tooltip>
+                        <Tooltip text="Introduce la localidad" />
+                     </tooltip></TextField>
                   <Label text="Provincia:" />
-                  <ComboBox fx:id="comboBoxProvincia" disable="true" prefHeight="25.0" prefWidth="210.0" />
+                  <ComboBox fx:id="comboBoxProvincia" disable="true" prefHeight="25.0" prefWidth="210.0">
+                     <tooltip>
+                        <Tooltip text="Introduce la provincia" />
+                     </tooltip></ComboBox>
                </children>
                <padding>
                   <Insets bottom="5.0" top="5.0" />
@@ -80,12 +92,18 @@
             </Label>
             <HBox>
                <children>
-                  <DatePicker fx:id="datePickerLlegada" disable="true" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de llegada">
+                  <DatePicker fx:id="datePickerLlegada" disable="true" onAction="#onActionFechaLlegada" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de llegada">
                      <HBox.margin>
                         <Insets right="70.0" />
                      </HBox.margin>
+                     <tooltip>
+                        <Tooltip text="Introduce la fecha de llegada al hotel" />
+                     </tooltip>
                   </DatePicker>
-                  <DatePicker fx:id="datePickerSalida" disable="true" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de salida" />
+                  <DatePicker fx:id="datePickerSalida" disable="true" prefHeight="25.0" prefWidth="225.0" promptText="Fecha de salida">
+                     <tooltip>
+                        <Tooltip text="Introduce la fecha de salida del hotel" />
+                     </tooltip></DatePicker>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
@@ -94,9 +112,15 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Label text="Número de Habitaciones:" />
-                  <Spinner fx:id="spinnerHabitaciones" disable="true" prefHeight="25.0" prefWidth="86.0" />
+                  <Spinner fx:id="spinnerHabitaciones" disable="true" editable="true" prefHeight="25.0" prefWidth="86.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el número de habitaciones a reservar" />
+                     </tooltip></Spinner>
                   <Label text="Tipo de Habitación:" />
-                  <ComboBox fx:id="comboBoxTipoHab" disable="true" prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="comboBoxTipoHab" disable="true" prefHeight="25.0" prefWidth="167.0">
+                     <tooltip>
+                        <Tooltip text="Introduce el tipo de habitación a reservar" />
+                     </tooltip></ComboBox>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
@@ -117,20 +141,23 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <VBox disable="true" prefHeight="81.0" prefWidth="260.0" spacing="3.0" GridPane.rowIndex="1">
+                  <VBox fx:id="vboxRadBtn" disable="true" prefHeight="81.0" prefWidth="260.0" spacing="3.0" GridPane.rowIndex="1">
                      <children>
                         <RadioButton fx:id="radBtnAlojamientoDesayuno" mnemonicParsing="false" text="Alojamiento y desayuno">
                            <toggleGroup>
                               <ToggleGroup fx:id="radioButtons" />
                            </toggleGroup></RadioButton>
-                        <RadioButton fx:id="radBtnMediaPension" mnemonicParsing="false" text="Media Pensión" />
-                        <RadioButton fx:id="radBtnPensionCompleta" mnemonicParsing="false" text="Pensión Completa" />
+                        <RadioButton fx:id="radBtnMediaPension" mnemonicParsing="false" text="Media Pensión" toggleGroup="$radioButtons" />
+                        <RadioButton fx:id="radBtnPensionCompleta" mnemonicParsing="false" text="Pensión Completa" toggleGroup="$radioButtons" />
                      </children>
                   </VBox>
                   <CheckBox fx:id="checkBoxFumador" disable="true" mnemonicParsing="false" text="Fumador" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="190.0" />
                      </GridPane.margin>
+                     <tooltip>
+                        <Tooltip text="Habitación para fumadores" />
+                     </tooltip>
                   </CheckBox>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="En virtud de la ley de sanidad se informa a los clientes de que solo podrán fumar en las habitaciones reservadas para tal fin." textAlignment="JUSTIFY" wrappingWidth="235.9140625" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
@@ -154,9 +181,18 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#onActionListenerLimpiar" text="Limpiar" />
-            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#onActionListenerAceptar" text="Aceptar" GridPane.columnIndex="1" />
-            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionListenerCancelar" text="Cancelar" GridPane.columnIndex="2" />
+            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#onActionListenerLimpiar" text="Limpiar">
+               <tooltip>
+                  <Tooltip text="Limpiar los datos" />
+               </tooltip></Button>
+            <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#onActionListenerAceptar" text="Aceptar" GridPane.columnIndex="1">
+               <tooltip>
+                  <Tooltip text="Enviar Datos" />
+               </tooltip></Button>
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionListenerCancelar" text="Cancelar" GridPane.columnIndex="2">
+               <tooltip>
+                  <Tooltip text="Cancelar y volver al Menú" />
+               </tooltip></Button>
          </children>
       </GridPane>
    </children>

@@ -14,12 +14,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author Alberto León
  */
 public class FXMLPrincipalController implements Initializable {
+
+    private EntityManager em;
+    private EntityManagerFactory emf;
 
     private Label label;
     @FXML
@@ -37,13 +42,16 @@ public class FXMLPrincipalController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Habitaciones.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        
+
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Reserva de Habitaciones");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.getIcons().add(new Image("recursos/iconrooms.png"));
         stage.show();
+
+        HabitacionesController habitaciones = (HabitacionesController) fxmlLoader.getController();
+        habitaciones.setEm(em);
     }
 
     @FXML
@@ -51,13 +59,23 @@ public class FXMLPrincipalController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SalonHabana.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        
+
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Reserva de Salón Habana");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
-        stage.getIcons().add(new Image("recursos/iconrooms.png"));
+        stage.getIcons().add(new Image("recursos/conference.png"));
         stage.show();
+        
+        SalonHabanaController habana = (SalonHabanaController) fxmlLoader.getController();
+        habana.setEm(em);
     }
 
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public void setEmf(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 }
