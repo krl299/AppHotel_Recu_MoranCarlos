@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
@@ -103,6 +104,22 @@ public class HabitacionesController implements Initializable {
         lista.add("Doble");
         lista.add("Matrimonio");
         comboBoxTipoHab.setItems(FXCollections.observableList(lista));
+        comboBoxTipoHab.setValue(lista.get(0));
+        
+        datePickerLlegada.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+
+        datePickerSalida.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.compareTo(datePickerLlegada.getValue()) < 1);
+            }
+        });
     }
 
     @FXML
@@ -129,6 +146,7 @@ public class HabitacionesController implements Initializable {
             radioButtons.selectToggle(null);
             comboBoxProvincia.getSelectionModel().clearSelection();
             spinnerHabitaciones.getValueFactory().setValue(1);
+            comboBoxTipoHab.setValue(lista.get(0));
         }
     }
 
@@ -138,9 +156,13 @@ public class HabitacionesController implements Initializable {
         Alert alerta;
         Reservahabitacion habitacion = new Reservahabitacion();
         errorFormato = false;
+        if(cliente==null)
+        {
+            cliente = new Cliente();
+        }
 
         if (!textFieldDNI.getText().equals("") && textFieldDNI.getText() != null) {
-            cliente.setDni(textFieldDNI.getText());
+            cliente.setDni(textFieldDNI.getText().toString());
 
             if (!textFieldNombre.getText().equals("") && textFieldNombre.getText() != null) {
                 cliente.setNombre(textFieldNombre.getText());
@@ -203,7 +225,7 @@ public class HabitacionesController implements Initializable {
 
             habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
-            if (!comboBoxTipoHab.getValue().toString().isEmpty() && comboBoxTipoHab.getValue() != null) {
+            if (!comboBoxTipoHab.getValue().isEmpty() && comboBoxTipoHab.getValue() != null) {
                 habitacion.setTipo(comboBoxTipoHab.getValue().toString());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");

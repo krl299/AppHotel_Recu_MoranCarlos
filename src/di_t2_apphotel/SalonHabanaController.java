@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -106,6 +107,13 @@ public class SalonHabanaController implements Initializable {
         comboBoxTipoCocina.setValue(lista.get(0));
         comboBoxTipoCocina.setItems(FXCollections.observableList(lista));
 
+        datePickerFecha.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
     }
 
     @FXML
@@ -261,6 +269,10 @@ public class SalonHabanaController implements Initializable {
         errorFormato = false;
         Alert alerta;
         Reservasalon salon = new Reservasalon();
+
+        if (cliente == null) {
+            cliente = new Cliente();
+        }
 
         if (textFieldDNI.getText().isEmpty() || textFieldDNI.getText() == null) {
             errorFormato = true;
@@ -446,14 +458,20 @@ public class SalonHabanaController implements Initializable {
         }
 
         if (checkBoxHabitaciones.isSelected()) {
-            if (textFieldHab.getText().equals("")) {
+            if (textFieldHab.getText().equals("") || textFieldHab.getText() == null) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número de habitaciones");
                 alerta.showAndWait();
+            } else if (textFieldHab.getText().matches("[a-zA-Z]*")) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
+                alerta.showAndWait();
             } else {
-                textFieldHab.getText();
+                salon.setHabitaciones(Integer.parseInt(textFieldHab.getText()));
             }
         }
+
+        salon.setComida(comboBoxTipoCocina.getValue());
 
         if (datePickerFecha.getValue() == null) {
             errorFormato = true;
