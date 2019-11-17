@@ -106,20 +106,6 @@ public class HabitacionesController implements Initializable {
         comboBoxTipoHab.setItems(FXCollections.observableList(lista));
         comboBoxTipoHab.setValue(lista.get(0));
 
-        datePickerLlegada.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today) < 0);
-            }
-        });
-
-        datePickerSalida.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                setDisable(empty || date.compareTo(datePickerLlegada.getValue()) < 1);
-            }
-        });
     }
 
     @FXML
@@ -182,7 +168,6 @@ public class HabitacionesController implements Initializable {
 
             if (!textFieldLocalidad.getText().equals("") && textFieldLocalidad != null) {
                 cliente.setLocalidad(textFieldLocalidad.getText());
-
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la localidad");
                 alerta.showAndWait();
@@ -191,7 +176,6 @@ public class HabitacionesController implements Initializable {
 
             if (!comboBoxProvincia.getValue().toString().isEmpty() && comboBoxProvincia.getValue() != null) {
                 cliente.setProvincia(comboBoxProvincia.getValue());
-
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una provincia");
                 alerta.showAndWait();
@@ -266,7 +250,7 @@ public class HabitacionesController implements Initializable {
                         em.persist(habitacion);
                         em.getTransaction().begin();
                         em.getTransaction().commit();
-                        
+
                         Stage stage = (Stage) btnAceptar.getScene().getWindow();
                         stage.close();
                     }
@@ -345,6 +329,8 @@ public class HabitacionesController implements Initializable {
                     habilitar();
                 }
                 textFieldDNI.setDisable(true);
+
+                deshabilitarFecha();
             }
         }
     }
@@ -388,6 +374,25 @@ public class HabitacionesController implements Initializable {
             @Override
             public Provincia fromString(String userId) {
                 return null;
+            }
+        });
+    }
+
+    private void deshabilitarFecha() {
+        datePickerLlegada.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+
+        datePickerSalida.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (datePickerLlegada.getValue() != null) {
+                    setDisable(empty || date.compareTo(datePickerLlegada.getValue()) < 1);
+                }
             }
         });
     }
