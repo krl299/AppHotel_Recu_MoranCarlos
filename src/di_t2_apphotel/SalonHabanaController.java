@@ -33,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 
 /**
  * FXML Controller class
@@ -333,18 +334,27 @@ public class SalonHabanaController implements Initializable {
             }
         }
         if (!errorFormato) {
-            em.merge(cliente);
-            em.persist(salon);
-            em.getTransaction().begin();
-            em.getTransaction().commit();
+            try {
 
-            alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
-            alerta.setHeaderText("Enviar Reserva");
+                alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
+                alerta.setHeaderText("Enviar Reserva");
 
-            Optional<ButtonType> result = alerta.showAndWait();
-            if (result.get() == ButtonType.YES) {
-                Stage stage = (Stage) btnAceptar.getScene().getWindow();
-                stage.close();
+                Optional<ButtonType> result = alerta.showAndWait();
+                if (result.get() == ButtonType.YES) {
+                    em.merge(cliente);
+                    em.persist(salon);
+                    em.getTransaction().begin();
+                    em.getTransaction().commit();
+
+                    Stage stage = (Stage) btnAceptar.getScene().getWindow();
+                    stage.close();
+                }
+
+            } catch (RollbackException e) {
+                em.getTransaction().rollback();
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Error al guardar los datos. Inténtelo de nuevo");
+                alerta.setContentText(e.getLocalizedMessage());
+                alerta.showAndWait();
             }
         }
     }
