@@ -146,10 +146,10 @@ public class HabitacionesController implements Initializable {
             cliente = new Cliente();
         }
 
-        if (!textFieldDNI.getText().equals("") && textFieldDNI.getText() != null) {
+        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("")) {
             cliente.setDni(textFieldDNI.getText());
 
-            if (!textFieldNombre.getText().equals("") && textFieldNombre.getText() != null) {
+            if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("")) {
                 cliente.setNombre(textFieldNombre.getText());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un nombre");
@@ -157,16 +157,15 @@ public class HabitacionesController implements Initializable {
                 errorFormato = true;
             }
 
-            if (!textFieldDireccion.getText().equals("") && textFieldDireccion != null) {
+            if (textFieldDireccion != null && !textFieldDireccion.getText().equals("")) {
                 cliente.setDireccion(textFieldDireccion.getText());
-
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una direccion");
                 alerta.showAndWait();
                 errorFormato = true;
             }
 
-            if (!textFieldLocalidad.getText().equals("") && textFieldLocalidad != null) {
+            if (textFieldLocalidad != null && !textFieldLocalidad.getText().equals("")) {
                 cliente.setLocalidad(textFieldLocalidad.getText());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la localidad");
@@ -174,7 +173,7 @@ public class HabitacionesController implements Initializable {
                 errorFormato = true;
             }
 
-            if (!comboBoxProvincia.getValue().toString().isEmpty() && comboBoxProvincia.getValue() != null) {
+            if (comboBoxProvincia.getValue() != null && !comboBoxProvincia.getValue().toString().isEmpty()) {
                 cliente.setProvincia(comboBoxProvincia.getValue());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una provincia");
@@ -208,7 +207,7 @@ public class HabitacionesController implements Initializable {
 
             habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
-            if (!comboBoxTipoHab.getValue().isEmpty() && comboBoxTipoHab.getValue() != null) {
+            if (comboBoxTipoHab.getValue() != null && !comboBoxTipoHab.getValue().isEmpty()) {
                 habitacion.setTipo(comboBoxTipoHab.getValue());
             } else {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");
