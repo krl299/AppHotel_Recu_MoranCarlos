@@ -237,8 +237,11 @@ public class SalonHabanaController implements Initializable {
             textFieldDNI.setDisable(false);
             textFieldDNI.setText("");
             textFieldNombre.setText("");
+            textFieldNombre.setDisable(true);
             textFieldDireccion.setText("");
+            textFieldDireccion.setDisable(true);
             textFieldTelefono.setText("");
+            textFieldTelefono.setDisable(true);
             grupoBtn1.selectToggle(null);
             textFiedlPersonas.setText("");
             comboBoxTipoCocina.setValue(lista.get(0));
@@ -271,91 +274,97 @@ public class SalonHabanaController implements Initializable {
         Alert alerta;
         Reservasalon salon = new Reservasalon();
 
-        if (cliente == null) {
-            cliente = new Cliente();
-        }
-
-        if (textFieldDNI.getText().isEmpty() || textFieldDNI.getText() == null) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un DNI");
-            alerta.showAndWait();
-        } else {
-            cliente.setDni(textFieldDNI.getText());
-            salon.setDni(cliente);
-        }
-
-        if (textFieldNombre.getText().isEmpty() || textFieldNombre.getText() == null) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un  nombre");
-            alerta.showAndWait();
-        } else {
-            cliente.setNombre(textFieldNombre.getText());
-        }
-
-        if (textFieldDireccion.getText().isEmpty() || textFieldDireccion.getText() == null) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una dirección");
-            alerta.showAndWait();
-        } else {
-            cliente.setDireccion(textFieldDireccion.getText());
-        }
-
-        if (textFieldTelefono.getText().isEmpty() || textFieldTelefono.getText() == null) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
-            alerta.showAndWait();
-        } else if (!textFieldTelefono.getText().matches("[0-9]*")) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
-            alerta.showAndWait();
-        } else {
-            cliente.setTelefono(textFieldTelefono.getText());
-        }
-
-        if (grupoBtn1.getSelectedToggle() == null) {
-            errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
-            alerta.showAndWait();
-        } else {
-            if (roundBtnBanquete.isSelected()) {
-                salon.setEvento("Banquete");
-                /*Comprobación del radio button Banquete*/
-                comprobarBanquete(salon);
-
-            } else if (roundBtnJornada.isSelected()) {
-                salon.setEvento("Jornada");
-                /*Comprobación del radio button Jornada*/
-                comprobarJornada(salon);
-
-            } else {
-                salon.setEvento("Congreso");
-                /*Comprobación del radio button Congreso*/
-                comprobarCongreso(salon);
+        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("")) {
+            if (cliente == null) {
+                cliente = new Cliente();
             }
-        }
-        if (!errorFormato) {
-            try {
 
-                alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
-                alerta.setHeaderText("Enviar Reserva");
-
-                Optional<ButtonType> result = alerta.showAndWait();
-                if (result.get() == ButtonType.YES) {
-                    em.merge(cliente);
-                    em.persist(salon);
-                    em.getTransaction().begin();
-                    em.getTransaction().commit();
-
-                    Stage stage = (Stage) btnAceptar.getScene().getWindow();
-                    stage.close();
-                }
-
-            } catch (RollbackException e) {
-                em.getTransaction().rollback();
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Error al guardar los datos. Inténtelo de nuevo");
-                alerta.setContentText(e.getLocalizedMessage());
+            if (textFieldDNI.getText() == null || textFieldDNI.getText().isEmpty()) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un DNI");
                 alerta.showAndWait();
+            } else {
+                cliente.setDni(textFieldDNI.getText());
+                salon.setDni(cliente);
             }
+
+            if (textFieldNombre.getText() == null || textFieldNombre.getText().isEmpty()) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un  nombre");
+                alerta.showAndWait();
+            } else {
+                cliente.setNombre(textFieldNombre.getText());
+            }
+
+            if (textFieldDireccion.getText() == null || textFieldDireccion.getText().isEmpty()) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una dirección");
+                alerta.showAndWait();
+            } else {
+                cliente.setDireccion(textFieldDireccion.getText());
+            }
+
+            if (textFieldTelefono.getText() == null || textFieldTelefono.getText().isEmpty()) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
+                alerta.showAndWait();
+            } else if (!textFieldTelefono.getText().matches("[0-9]*")) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
+                alerta.showAndWait();
+            } else {
+                cliente.setTelefono(textFieldTelefono.getText());
+            }
+
+            if (grupoBtn1.getSelectedToggle() == null) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
+                alerta.showAndWait();
+            } else {
+                if (roundBtnBanquete.isSelected()) {
+                    salon.setEvento("Banquete");
+                    /*Comprobación del radio button Banquete*/
+                    comprobarBanquete(salon);
+
+                } else if (roundBtnJornada.isSelected()) {
+                    salon.setEvento("Jornada");
+                    /*Comprobación del radio button Jornada*/
+                    comprobarJornada(salon);
+
+                } else {
+                    salon.setEvento("Congreso");
+                    /*Comprobación del radio button Congreso*/
+                    comprobarCongreso(salon);
+                }
+            }
+            if (!errorFormato) {
+                try {
+
+                    alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
+                    alerta.setHeaderText("Enviar Reserva");
+
+                    Optional<ButtonType> result = alerta.showAndWait();
+                    if (result.get() == ButtonType.YES) {
+                        em.merge(cliente);
+                        em.persist(salon);
+                        em.getTransaction().begin();
+                        em.getTransaction().commit();
+
+                        Stage stage = (Stage) btnAceptar.getScene().getWindow();
+                        stage.close();
+                    }
+
+                } catch (RollbackException e) {
+                    em.getTransaction().rollback();
+                    alerta = new Alert(Alert.AlertType.INFORMATION, "Error al guardar los datos. Inténtelo de nuevo");
+                    alerta.setContentText(e.getLocalizedMessage());
+                    alerta.showAndWait();
+                }
+            }
+        } else {
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
+            alerta.showAndWait();
+            errorFormato = true;
         }
     }
 
@@ -385,7 +394,7 @@ public class SalonHabanaController implements Initializable {
     public void comprobarBanquete(Reservasalon salon) {
         Alert alerta;
 
-        if ((textFiedlPersonas.getText().isEmpty() || textFiedlPersonas.getText() == null)) {
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty())) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
@@ -403,7 +412,7 @@ public class SalonHabanaController implements Initializable {
 
         salon.setComida(comboBoxTipoCocina.getValue());
 
-        if (datePickerFecha.getValue() == null || datePickerFecha.getValue().toString().isEmpty()) {
+        if (datePickerFecha.getValue().toString().isEmpty() || datePickerFecha.getValue() == null) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
             alerta.showAndWait();
@@ -419,7 +428,7 @@ public class SalonHabanaController implements Initializable {
     public void comprobarJornada(Reservasalon salon) {
         Alert alerta;
 
-        if ((textFiedlPersonas.getText().isEmpty() || textFiedlPersonas.getText() == null)) {
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty())) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
@@ -451,7 +460,7 @@ public class SalonHabanaController implements Initializable {
     public void comprobarCongreso(Reservasalon salon) {
         Alert alerta;
 
-        if ((textFiedlPersonas.getText().isEmpty() || textFiedlPersonas.getText() == null)) {
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty())) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
@@ -468,7 +477,7 @@ public class SalonHabanaController implements Initializable {
         }
 
         if (checkBoxHabitaciones.isSelected()) {
-            if (textFieldHab.getText().equals("") || textFieldHab.getText() == null) {
+            if (textFieldHab.getText() == null || textFieldHab.getText().equals("")) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número de habitaciones");
                 alerta.showAndWait();
@@ -495,7 +504,7 @@ public class SalonHabanaController implements Initializable {
             salon.setFecha(date);
         }
 
-        if ((textFieldDIas.getText().isEmpty() || textFieldDIas.getText() == null)) {
+        if ((textFieldDIas.getText() == null || textFieldDIas.getText().isEmpty())) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número correcto de días");
             alerta.showAndWait();
