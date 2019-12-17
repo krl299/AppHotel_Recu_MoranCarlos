@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -184,8 +186,13 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionBtnBuscar(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))
-                    && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
+            
+            // Expresion regular para comprabar el dni.
+            String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
+            Pattern pat = Pattern.compile(dniRegexp);
+            Matcher mat = pat.matcher(textFieldDNI.getText());
+            
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null) && (mat.matches())) && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
 
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
@@ -220,8 +227,11 @@ public class SalonHabanaController implements Initializable {
                 comboBoxTipoCocina.setValue(comboBoxTipoCocina.getItems().get(0));
                 textFieldDNI.setDisable(true);
                 grupo_rb.setDisable(false);
+            } else {
+                textFieldDNI.setDisable(false);
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION, "DNI incorrecto!");
+                alerta.showAndWait();
             }
-
         }
     }
 
@@ -274,7 +284,12 @@ public class SalonHabanaController implements Initializable {
         Alert alerta;
         Reservasalon salon = new Reservasalon();
 
-        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("")) {
+        // Expresion regular para comprabar el dni.
+        String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
+        Pattern pat = Pattern.compile(dniRegexp);
+        Matcher mat = pat.matcher(textFieldDNI.getText());
+            
+        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
             if (cliente == null) {
                 cliente = new Cliente();
             }
@@ -287,10 +302,14 @@ public class SalonHabanaController implements Initializable {
                 cliente.setDni(textFieldDNI.getText());
                 salon.setDni(cliente);
             }
-
-            if (textFieldNombre.getText() == null || textFieldNombre.getText().isEmpty()) {
+            
+            // Expresion regular para comprabar el dni.
+            String name = "[A-Za-z]*";
+            pat = Pattern.compile(name);
+            mat = pat.matcher(textFieldTelefono.getText());
+            if (textFieldNombre.getText() == null || textFieldNombre.getText().isEmpty() || (mat.matches())) {
                 errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un  nombre");
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un nombre correcto");
                 alerta.showAndWait();
             } else {
                 cliente.setNombre(textFieldNombre.getText());
@@ -304,11 +323,12 @@ public class SalonHabanaController implements Initializable {
                 cliente.setDireccion(textFieldDireccion.getText());
             }
 
+            
             if (textFieldTelefono.getText() == null || textFieldTelefono.getText().isEmpty()) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
                 alerta.showAndWait();
-            } else if (!textFieldTelefono.getText().matches("[0-9]*")) {
+            } else if (!textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$")) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
                 alerta.showAndWait();
@@ -362,7 +382,8 @@ public class SalonHabanaController implements Initializable {
                 }
             }
         } else {
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
+            textFieldDNI.setDisable(false);
+            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI correctamente!");
             alerta.showAndWait();
             errorFormato = true;
         }
