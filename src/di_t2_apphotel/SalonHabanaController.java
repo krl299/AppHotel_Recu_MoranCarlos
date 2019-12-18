@@ -148,7 +148,7 @@ public class SalonHabanaController implements Initializable {
         datePickerFecha.setDisable(false);
         labelTipoElegido.setDisable(false);
 
-        labelTipoElegido.setStyle("-fx-text-fill: #ff5c5c");
+        labelTipoElegido.setStyle("-fx-text-fill: #3BB33B");
         //Cambiamos el label del tipo de evento
         labelTipoElegido.setText("Tipo Elegido: Jornada");
 
@@ -169,7 +169,7 @@ public class SalonHabanaController implements Initializable {
 
         //Cambiamos el label del tipo de evento
         labelTipoElegido.setText("Tipo Elegido: Congreso");
-        labelTipoElegido.setStyle("-fx-text-fill: #e6ba37");
+        labelTipoElegido.setStyle("-fx-text-fill: #7923A4");
 
     }
 
