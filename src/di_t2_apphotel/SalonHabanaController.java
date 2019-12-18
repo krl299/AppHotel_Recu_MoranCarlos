@@ -425,7 +425,7 @@ public class SalonHabanaController implements Initializable {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
-        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 && Integer.parseInt(textFiedlPersonas.getText()) < 0) {
+        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
@@ -435,7 +435,7 @@ public class SalonHabanaController implements Initializable {
 
         salon.setComida(comboBoxTipoCocina.getValue());
 
-        if (datePickerFecha.getValue().toString().isEmpty() || datePickerFecha.getValue() == null) {
+        if (datePickerFecha.getValue() == null || datePickerFecha.getValue().toString().isEmpty()) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
             alerta.showAndWait();
@@ -491,7 +491,7 @@ public class SalonHabanaController implements Initializable {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
-        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 && Integer.parseInt(textFiedlPersonas.getText()) < 0) {
+        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
             alerta.showAndWait();
@@ -535,7 +535,7 @@ public class SalonHabanaController implements Initializable {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el correcto de días");
             alerta.showAndWait();
-        } else if (Integer.parseInt(textFieldDIas.getText()) >= 50 && Integer.parseInt(textFieldDIas.getText()) < 0) {
+        } else if (Integer.parseInt(textFieldDIas.getText()) >= 50 || Integer.parseInt(textFieldDIas.getText()) < 0) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el correcto de días");
             alerta.showAndWait();

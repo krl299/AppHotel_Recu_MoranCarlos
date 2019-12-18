@@ -12,11 +12,7 @@
    <top>
       <MenuBar prefHeight="12.0" prefWidth="618.0" BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Clientes">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Objeto 1" />
-               </items>
-            </Menu>
+            <Menu mnemonicParsing="false" text="Clientes" />
             <Menu mnemonicParsing="false" text="Reservas">
                <items>
                   <MenuItem fx:id="menuHabitaciones" mnemonicParsing="false" onAction="#onActionHabitaciones" text="Habitaciones" />
