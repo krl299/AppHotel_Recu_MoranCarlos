@@ -142,6 +142,7 @@ public class HabitacionesController implements Initializable {
         Alert alerta;
         Reservahabitacion habitacion = new Reservahabitacion();
         errorFormato = false;
+        boolean alert=true;
         if (cliente == null) {
             cliente = new Cliente();
         }
@@ -151,34 +152,38 @@ public class HabitacionesController implements Initializable {
 
             if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("")) {
                 cliente.setNombre(textFieldNombre.getText());
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un nombre");
                 alerta.showAndWait();
                 errorFormato = true;
+                alert=false;
             }
 
             if (textFieldDireccion != null && !textFieldDireccion.getText().equals("")) {
                 cliente.setDireccion(textFieldDireccion.getText());
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una direccion");
                 alerta.showAndWait();
                 errorFormato = true;
+                alert=false;
             }
 
             if (textFieldLocalidad != null && !textFieldLocalidad.getText().equals("")) {
                 cliente.setLocalidad(textFieldLocalidad.getText());
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la localidad");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             if (comboBoxProvincia.getValue() != null && !comboBoxProvincia.getValue().toString().isEmpty()) {
                 cliente.setProvincia(comboBoxProvincia.getValue());
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una provincia");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             if (datePickerLlegada.getValue() != null && !datePickerLlegada.getValue().toString().isEmpty()) {
@@ -187,10 +192,11 @@ public class HabitacionesController implements Initializable {
                 Instant instant = zonedDateTime.toInstant();
                 Date llegada = Date.from(instant);
                 habitacion.setLlegada(llegada);
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de llegada");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             if (datePickerSalida.getValue() != null && !datePickerSalida.getValue().toString().isEmpty()) {
@@ -199,20 +205,22 @@ public class HabitacionesController implements Initializable {
                 Instant instant = zonedDateTime.toInstant();
                 Date salida = Date.from(instant);
                 habitacion.setSalida(salida);
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de salida");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
             if (comboBoxTipoHab.getValue() != null && !comboBoxTipoHab.getValue().isEmpty()) {
                 habitacion.setTipo(comboBoxTipoHab.getValue());
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             if (checkBoxFumador.isSelected()) {
@@ -229,10 +237,11 @@ public class HabitacionesController implements Initializable {
                 } else if (radBtnPensionCompleta.isSelected()) {
                     habitacion.setRegimen("Pensión Completa");
                 }
-            } else {
+            } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un Régimen");
                 alerta.showAndWait();
                 errorFormato = true;
+                 alert=false;
             }
 
             habitacion.setDni(cliente);
@@ -262,11 +271,13 @@ public class HabitacionesController implements Initializable {
                 }
             }
 
-        } else {
+        } else if(alert){
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
             alerta.showAndWait();
             errorFormato = true;
+             alert=false;
         }
+        
     }
 
     @FXML

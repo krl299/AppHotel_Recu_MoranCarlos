@@ -273,53 +273,55 @@ public class SalonHabanaController implements Initializable {
         errorFormato = false;
         Alert alerta;
         Reservasalon salon = new Reservasalon();
+        boolean alert=true;
 
         if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("")) {
             if (cliente == null) {
                 cliente = new Cliente();
             }
 
-            if (textFieldDNI.getText() == null || textFieldDNI.getText().isEmpty()) {
-                errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un DNI");
-                alerta.showAndWait();
-            } else {
+            else if (textFieldDNI.getText() != null && !textFieldDNI.getText().isEmpty()) {
                 cliente.setDni(textFieldDNI.getText());
                 salon.setDni(cliente);
             }
 
-            if (textFieldNombre.getText() == null || textFieldNombre.getText().isEmpty()) {
+            if (textFieldNombre.getText() != null && !textFieldNombre.getText().isEmpty()) {
+                cliente.setNombre(textFieldNombre.getText());
+            } else  if(alert){
+     
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un  nombre");
                 alerta.showAndWait();
-            } else {
-                cliente.setNombre(textFieldNombre.getText());
+                   alert=false;
             }
 
-            if (textFieldDireccion.getText() == null || textFieldDireccion.getText().isEmpty()) {
-                errorFormato = true;
+            if (textFieldDireccion.getText() != null && !textFieldDireccion.getText().isEmpty()) {
+                 cliente.setDireccion(textFieldDireccion.getText());
+            } else  if(alert){
+               errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una dirección");
                 alerta.showAndWait();
-            } else {
-                cliente.setDireccion(textFieldDireccion.getText());
+                alert=false;
             }
 
-            if (textFieldTelefono.getText() == null || textFieldTelefono.getText().isEmpty()) {
-                errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
-                alerta.showAndWait();
+            if (textFieldTelefono.getText() != null && !textFieldTelefono.getText().isEmpty()) {
+                cliente.setTelefono(textFieldTelefono.getText());
             } else if (!textFieldTelefono.getText().matches("[0-9]*")) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
                 alerta.showAndWait();
-            } else {
-                cliente.setTelefono(textFieldTelefono.getText());
+            } else if(alert){
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
+                alerta.showAndWait();
+                alert=false;
             }
 
-            if (grupoBtn1.getSelectedToggle() == null) {
+            if (grupoBtn1.getSelectedToggle() != null && alert) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
                 alerta.showAndWait();
+                alert=false;
             } else {
                 if (roundBtnBanquete.isSelected()) {
                     salon.setEvento("Banquete");
@@ -361,10 +363,11 @@ public class SalonHabanaController implements Initializable {
                     alerta.showAndWait();
                 }
             }
-        } else {
+        } else if(alert){
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
             alerta.showAndWait();
             errorFormato = true;
+            alert=false;
         }
     }
 
