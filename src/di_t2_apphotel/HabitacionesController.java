@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -112,8 +114,7 @@ public class HabitacionesController implements Initializable {
     private void onActionListenerLimpiar(ActionEvent event) {
 
         //Alerta que avisa al usuario antes de borrar los datos
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer limpiar los datos (no se borrarán sus datos)?",
-                ButtonType.YES, ButtonType.NO);
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer limpiar los datos (no se borrarán sus datos)?", ButtonType.YES, ButtonType.NO);
         alerta.setHeaderText("Limpiar datos");
 
         Optional<ButtonType> result = alerta.showAndWait();
@@ -146,11 +147,20 @@ public class HabitacionesController implements Initializable {
         if (cliente == null) {
             cliente = new Cliente();
         }
-
-        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("")) {
+        
+        // Expresion regular para comprabar el dni.
+        String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
+        Pattern pat = Pattern.compile(dniRegexp);
+        Matcher mat = pat.matcher(textFieldDNI.getText());
+            
+        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
             cliente.setDni(textFieldDNI.getText());
 
-            if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("")) {
+            // Expresion regular para comprabar el dni.
+            String name = "[A-Za-z]*";
+            pat = Pattern.compile(name);
+            mat = pat.matcher(textFieldNombre.getText());
+            if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("") && (mat.matches())) {
                 cliente.setNombre(textFieldNombre.getText());
             } else if(alert){
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un nombre");
@@ -248,8 +258,7 @@ public class HabitacionesController implements Initializable {
 
             if (!errorFormato) {
                 try {
-                    alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?",
-                            ButtonType.YES, ButtonType.NO);
+                    alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
                     alerta.setHeaderText("Enviar Reserva");
                     Optional<ButtonType> result = alerta.showAndWait();
 
@@ -282,8 +291,7 @@ public class HabitacionesController implements Initializable {
 
     @FXML
     private void onActionListenerCancelar(ActionEvent event) {
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?",
-                ButtonType.YES, ButtonType.NO);
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?", ButtonType.YES, ButtonType.NO);
         alerta.setHeaderText("Cerrar ventana");
 
         Optional<ButtonType> result = alerta.showAndWait();
@@ -295,10 +303,14 @@ public class HabitacionesController implements Initializable {
 
     @FXML
     private void onActionBtnBuscar(KeyEvent event) {
-
+        
         if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null))
-                    && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
+            // Expresion regular para comprabar el dni.
+            String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
+            Pattern pat = Pattern.compile(dniRegexp);
+            Matcher mat = pat.matcher(textFieldDNI.getText());
+            
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null) && (mat.matches())) && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
                 deshabilitar();
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
@@ -341,6 +353,10 @@ public class HabitacionesController implements Initializable {
                 textFieldDNI.setDisable(true);
 
                 deshabilitarFecha();
+            } else {
+                textFieldDNI.setDisable(false);
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION, "DNI incorrecto!");
+                alerta.showAndWait();
             }
         }
     }
