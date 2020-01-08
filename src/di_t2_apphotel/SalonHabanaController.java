@@ -1,5 +1,6 @@
 package di_t2_apphotel;
 
+import componentes_abrilcarlos.TemporizadorController;
 import entidades.Cliente;
 import entidades.Reservasalon;
 import java.net.URL;
@@ -14,6 +15,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,6 +99,8 @@ public class SalonHabanaController implements Initializable {
     private VBox grupo_rb;
     @FXML
     private Label labelPersona;
+    @FXML
+    private TemporizadorController temporizador;
 
     /**
      * Initializes the controller class.
@@ -117,6 +122,19 @@ public class SalonHabanaController implements Initializable {
                 LocalDate today = LocalDate.now();
                 setDisable(empty || date.compareTo(today) < 0);
             }
+        });
+
+        temporizador.getSegundos().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(newValue.intValue() == 0) {
+                    Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Expiración del tiempo, vuelva ha hacer la reserva.");
+                    alerta.show();
+                    btnAceptar.setDisable(true);
+                    btnLimpiar.setDisable(true);
+                }
+            }
+
         });
     }
 
@@ -284,7 +302,7 @@ public class SalonHabanaController implements Initializable {
         errorFormato = false;
         Alert alerta;
         Reservasalon salon = new Reservasalon();
-        
+
 
         // Expresion regular para comprabar el dni.
         String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
@@ -305,7 +323,7 @@ public class SalonHabanaController implements Initializable {
             String name = "[A-Za-z]*";
             pat = Pattern.compile(name);
             mat = pat.matcher(textFieldTelefono.getText());
-            
+
             if (textFieldNombre.getText() != null && !textFieldNombre.getText().isEmpty()) {
              cliente.setNombre(textFieldNombre.getText());
             }else if (alert){
@@ -327,7 +345,7 @@ public class SalonHabanaController implements Initializable {
 
             if (textFieldTelefono.getText() != null && !textFieldTelefono.getText().isEmpty() && textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$")) {
                 cliente.setTelefono(textFieldTelefono.getText());
-                
+
             } else if (!textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$") && alert) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
@@ -340,8 +358,13 @@ public class SalonHabanaController implements Initializable {
                 alert=false;
             }
 
-            if (grupoBtn1.getSelectedToggle() != null ) {
-                  if (roundBtnBanquete.isSelected()) {
+            if (grupoBtn1.getSelectedToggle() == null && !alert) {
+                errorFormato = true;
+                alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
+                alerta.showAndWait();
+                alert=false;
+            } else {
+                if (roundBtnBanquete.isSelected()) {
                     salon.setEvento("Banquete");
                     /*Comprobación del radio button Banquete*/
                     comprobarBanquete(salon);
@@ -421,7 +444,7 @@ public class SalonHabanaController implements Initializable {
 
     public void comprobarBanquete(Reservasalon salon) {
         Alert alerta;
-        
+
         if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && alert)) {
             errorFormato = true;
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
