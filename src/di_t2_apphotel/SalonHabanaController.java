@@ -379,11 +379,6 @@ public class SalonHabanaController implements Initializable {
                     /*Comprobación del radio button Congreso*/
                     comprobarCongreso(salon);
                 }
-            } else if(alert){
-              errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
-                alerta.showAndWait();
-                alert=false;
             }
             if (!errorFormato) {
                 try {
