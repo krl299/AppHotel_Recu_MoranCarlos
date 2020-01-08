@@ -3,8 +3,6 @@ package di_t2_apphotel;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

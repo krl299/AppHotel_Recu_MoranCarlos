@@ -1,5 +1,6 @@
 package di_t2_apphotel;
 
+import componentes_abrilcarlos.TemporizadorController;
 import entidades.Cliente;
 import entidades.Reservasalon;
 import java.net.URL;
@@ -14,6 +15,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -95,6 +98,8 @@ public class SalonHabanaController implements Initializable {
     private VBox grupo_rb;
     @FXML
     private Label labelPersona;
+    @FXML
+    private TemporizadorController temporizador;
 
     /**
      * Initializes the controller class.
@@ -116,6 +121,19 @@ public class SalonHabanaController implements Initializable {
                 LocalDate today = LocalDate.now();
                 setDisable(empty || date.compareTo(today) < 0);
             }
+        });
+        
+        temporizador.getSegundos().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(newValue.intValue() == 0) {
+                    Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Expiración del tiempo, vuelva ha hacer la reserva.");
+                    alerta.show();
+                    btnAceptar.setDisable(true);
+                    btnLimpiar.setDisable(true);
+                }
+            }
+            
         });
     }
 
@@ -336,7 +354,7 @@ public class SalonHabanaController implements Initializable {
                 alert=false;
             }
 
-            if (grupoBtn1.getSelectedToggle() != null && alert) {
+            if (grupoBtn1.getSelectedToggle() == null && !alert) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
                 alerta.showAndWait();
