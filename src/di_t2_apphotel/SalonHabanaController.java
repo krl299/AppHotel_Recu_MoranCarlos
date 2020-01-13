@@ -599,4 +599,8 @@ public class SalonHabanaController implements Initializable {
              alert=true;
         }
     }
+    
+     public void terminar() {
+        temporizador.getTimeline().stop();
+    }
 }

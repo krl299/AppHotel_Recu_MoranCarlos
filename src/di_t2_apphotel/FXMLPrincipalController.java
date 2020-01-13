@@ -69,6 +69,8 @@ public class FXMLPrincipalController implements Initializable {
         
         SalonHabanaController habana = (SalonHabanaController) fxmlLoader.getController();
         habana.setEm(em);
+        
+        stage.setOnHidden(e->habana.terminar());
     }
 
     public void setEm(EntityManager em) {
