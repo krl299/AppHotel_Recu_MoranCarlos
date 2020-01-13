@@ -1,11 +1,22 @@
-﻿Modificaciones implementadas para el proyecto Bionic:
-        1. El DNI no tiene control si introduces 8 letras.
-        2. El nombre deben ser caracteres, no pueden introducir números. 
+¿Qué características básica y atributos de usabilidad que no se cumplen?
+    -Identificar problemas de diseño y usabilidad.
+    -Que pautas de diseño no se han tenido en cuenta.
+    -Que diseños estructurales no se cumplen.
+    -Como se podría aumentar la usabilidad de la interfaz.
+
+Una vez analizado los problemas de usabilidad y diseño realizaremos la implementación de los avisos vistos anteriormente. Empezaremos esta tarea analizando los casos anteriores en AppHotel, tendremos que añadir la implementación del temporizador a la vista de la ‘Reserva Habana’. Una vez transcurrido 120 segundos se indicará un mensaje en el que se ha perdido la conexión y deshabilita el botón aceptar. 
+
+Características a realizar en el proyecto en funcion del diseño:
+        1. Añadir CSS para los botones.
+        2. Cambiar colores del tipo elegido.
         3. Faltan tooltips en tipo de evento y régimen.
-        4. Cada error se mostrar en una sólo alerta.
-        5. Control de números en Salon Habana para número de personas y número de días.
-        6. Quitar una opción de un menú ítem en clientes.
-        7. Comprobación para que estén todos los datos antes de realizar la reserva.
-        8. Comprobación para introducir sólo 9 números en el dni. 
-        9. Añadir CSS para los botones.
-        10. Cambiar colores del tipo elegido.
+        4. Quitar una opción de un menú ítem en clientes.
+
+Control de errores implementados:
+        1. El DNI no tiene control si introduces 8 letras.
+        2. El nombre deben ser caracteres, no pueden introducir números.
+        3. Cada error se mostrará en una sólo alerta.
+        4. Control de números en Salon Habana para número de personas y número de días.
+        5. Comprobación para que estén todos los datos antes de realizar la reserva.
+        6. Comprobación para introducir sólo 9 números en el dni.
+    
