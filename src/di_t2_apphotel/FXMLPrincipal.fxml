@@ -19,7 +19,10 @@
                   <MenuItem fx:id="menuSalonHabana" mnemonicParsing="false" onAction="#onActionSalonHabana" text="Salón Habana" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Ayuda" />
+            <Menu mnemonicParsing="false" onAction="#onActionAyuda" text="Ayuda">
+               <items>
+                  <MenuItem fx:id="helpid" mnemonicParsing="false" onAction="#onActionHelp" text="help" />
+               </items></Menu>
          </menus>
       </MenuBar>
    </top>

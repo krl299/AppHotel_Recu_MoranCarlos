@@ -128,7 +128,7 @@ public class SalonHabanaController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 if(newValue.intValue() == 0) {
-                    Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Expiración del tiempo, vuelva ha hacer la reserva.");
+                    Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Expiración del tiempo, vuelva a hacer la reserva.");
                     alerta.show();
                     btnAceptar.setDisable(true);
                     btnLimpiar.setDisable(true);
