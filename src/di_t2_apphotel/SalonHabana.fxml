@@ -211,6 +211,16 @@
                </tooltip>
             </Button>
             <TemporizadorController fx:id="temporizador" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="127.0" GridPane.columnIndex="1" />
+            <Label text="Tiempo: " GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </Label>
+            <Label text="segundos" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="120.0" />
+               </padding>
+            </Label>
          </children>
          <VBox.margin>
             <Insets bottom="10.0" top="10.0" />

@@ -24,12 +24,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
+ * @author usuario
  */
 @Entity
 @Table(name = "RESERVASALON")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "Reservasalon.findAll", query = "SELECT r FROM Reservasalon r")
     , @NamedQuery(name = "Reservasalon.findById", query = "SELECT r FROM Reservasalon r WHERE r.id = :id")
     , @NamedQuery(name = "Reservasalon.findByEvento", query = "SELECT r FROM Reservasalon r WHERE r.evento = :evento")
@@ -37,8 +38,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Reservasalon.findByNPersonas", query = "SELECT r FROM Reservasalon r WHERE r.nPersonas = :nPersonas")
     , @NamedQuery(name = "Reservasalon.findByComida", query = "SELECT r FROM Reservasalon r WHERE r.comida = :comida")
     , @NamedQuery(name = "Reservasalon.findByHabitaciones", query = "SELECT r FROM Reservasalon r WHERE r.habitaciones = :habitaciones")
-    , @NamedQuery(name = "Reservasalon.findByNDias", query = "SELECT r FROM Reservasalon r WHERE r.nDias = :nDias")})
-public class Reservasalon implements Serializable {
+    , @NamedQuery(name = "Reservasalon.findByNDias", query = "SELECT r FROM Reservasalon r WHERE r.nDias = :nDias")
+})
+public class Reservasalon implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -65,105 +68,129 @@ public class Reservasalon implements Serializable {
     @ManyToOne(optional = false)
     private Cliente dni;
 
-    public Reservasalon() {
+    public Reservasalon()
+    {
     }
 
-    public Reservasalon(Integer id) {
+    public Reservasalon(Integer id)
+    {
         this.id = id;
     }
 
-    public Reservasalon(Integer id, Date fecha, int nPersonas) {
+    public Reservasalon(Integer id, Date fecha, int nPersonas)
+    {
         this.id = id;
         this.fecha = fecha;
         this.nPersonas = nPersonas;
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id)
+    {
         this.id = id;
     }
 
-    public String getEvento() {
+    public String getEvento()
+    {
         return evento;
     }
 
-    public void setEvento(String evento) {
+    public void setEvento(String evento)
+    {
         this.evento = evento;
     }
 
-    public Date getFecha() {
+    public Date getFecha()
+    {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Date fecha)
+    {
         this.fecha = fecha;
     }
 
-    public int getNPersonas() {
+    public int getNPersonas()
+    {
         return nPersonas;
     }
 
-    public void setNPersonas(int nPersonas) {
+    public void setNPersonas(int nPersonas)
+    {
         this.nPersonas = nPersonas;
     }
 
-    public String getComida() {
+    public String getComida()
+    {
         return comida;
     }
 
-    public void setComida(String comida) {
+    public void setComida(String comida)
+    {
         this.comida = comida;
     }
 
-    public Integer getHabitaciones() {
+    public Integer getHabitaciones()
+    {
         return habitaciones;
     }
 
-    public void setHabitaciones(Integer habitaciones) {
+    public void setHabitaciones(Integer habitaciones)
+    {
         this.habitaciones = habitaciones;
     }
 
-    public Integer getNDias() {
+    public Integer getNDias()
+    {
         return nDias;
     }
 
-    public void setNDias(Integer nDias) {
+    public void setNDias(Integer nDias)
+    {
         this.nDias = nDias;
     }
 
-    public Cliente getDni() {
+    public Cliente getDni()
+    {
         return dni;
     }
 
-    public void setDni(Cliente dni) {
+    public void setDni(Cliente dni)
+    {
         this.dni = dni;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reservasalon)) {
+        if (!(object instanceof Reservasalon))
+        {
             return false;
         }
         Reservasalon other = (Reservasalon) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "entidades.Reservasalon[ id=" + id + " ]";
     }
     

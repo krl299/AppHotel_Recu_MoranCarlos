@@ -22,17 +22,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author usuario
  */
 @Entity
 @Table(name = "PROVINCIA")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p")
     , @NamedQuery(name = "Provincia.findById", query = "SELECT p FROM Provincia p WHERE p.id = :id")
     , @NamedQuery(name = "Provincia.findByCodigo", query = "SELECT p FROM Provincia p WHERE p.codigo = :codigo")
-    , @NamedQuery(name = "Provincia.findByNombre", query = "SELECT p FROM Provincia p WHERE p.nombre = :nombre")})
-public class Provincia implements Serializable {
+    , @NamedQuery(name = "Provincia.findByNombre", query = "SELECT p FROM Provincia p WHERE p.nombre = :nombre")
+})
+public class Provincia implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,73 +51,89 @@ public class Provincia implements Serializable {
     @OneToMany(mappedBy = "provincia")
     private Collection<Cliente> clienteCollection;
 
-    public Provincia() {
+    public Provincia()
+    {
     }
 
-    public Provincia(Integer id) {
+    public Provincia(Integer id)
+    {
         this.id = id;
     }
 
-    public Provincia(Integer id, String nombre) {
+    public Provincia(Integer id, String nombre)
+    {
         this.id = id;
         this.nombre = nombre;
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id)
+    {
         this.id = id;
     }
 
-    public String getCodigo() {
+    public String getCodigo()
+    {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(String codigo)
+    {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
     @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
+    public Collection<Cliente> getClienteCollection()
+    {
         return clienteCollection;
     }
 
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
+    public void setClienteCollection(Collection<Cliente> clienteCollection)
+    {
         this.clienteCollection = clienteCollection;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Provincia)) {
+        if (!(object instanceof Provincia))
+        {
             return false;
         }
         Provincia other = (Provincia) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "entidades.Provincia[ id=" + id + " ]";
     }
     

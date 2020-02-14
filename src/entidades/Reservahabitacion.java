@@ -24,12 +24,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
+ * @author usuario
  */
 @Entity
 @Table(name = "RESERVAHABITACION")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "Reservahabitacion.findAll", query = "SELECT r FROM Reservahabitacion r")
     , @NamedQuery(name = "Reservahabitacion.findById", query = "SELECT r FROM Reservahabitacion r WHERE r.id = :id")
     , @NamedQuery(name = "Reservahabitacion.findByLlegada", query = "SELECT r FROM Reservahabitacion r WHERE r.llegada = :llegada")
@@ -37,8 +38,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Reservahabitacion.findByNHabitaciones", query = "SELECT r FROM Reservahabitacion r WHERE r.nHabitaciones = :nHabitaciones")
     , @NamedQuery(name = "Reservahabitacion.findByTipo", query = "SELECT r FROM Reservahabitacion r WHERE r.tipo = :tipo")
     , @NamedQuery(name = "Reservahabitacion.findByFumador", query = "SELECT r FROM Reservahabitacion r WHERE r.fumador = :fumador")
-    , @NamedQuery(name = "Reservahabitacion.findByRegimen", query = "SELECT r FROM Reservahabitacion r WHERE r.regimen = :regimen")})
-public class Reservahabitacion implements Serializable {
+    , @NamedQuery(name = "Reservahabitacion.findByRegimen", query = "SELECT r FROM Reservahabitacion r WHERE r.regimen = :regimen")
+})
+public class Reservahabitacion implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,106 +70,130 @@ public class Reservahabitacion implements Serializable {
     @ManyToOne(optional = false)
     private Cliente dni;
 
-    public Reservahabitacion() {
+    public Reservahabitacion()
+    {
     }
 
-    public Reservahabitacion(Integer id) {
+    public Reservahabitacion(Integer id)
+    {
         this.id = id;
     }
 
-    public Reservahabitacion(Integer id, Date llegada, Date salida, int nHabitaciones) {
+    public Reservahabitacion(Integer id, Date llegada, Date salida, int nHabitaciones)
+    {
         this.id = id;
         this.llegada = llegada;
         this.salida = salida;
         this.nHabitaciones = nHabitaciones;
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id)
+    {
         this.id = id;
     }
 
-    public Date getLlegada() {
+    public Date getLlegada()
+    {
         return llegada;
     }
 
-    public void setLlegada(Date llegada) {
+    public void setLlegada(Date llegada)
+    {
         this.llegada = llegada;
     }
 
-    public Date getSalida() {
+    public Date getSalida()
+    {
         return salida;
     }
 
-    public void setSalida(Date salida) {
+    public void setSalida(Date salida)
+    {
         this.salida = salida;
     }
 
-    public int getNHabitaciones() {
+    public int getNHabitaciones()
+    {
         return nHabitaciones;
     }
 
-    public void setNHabitaciones(int nHabitaciones) {
+    public void setNHabitaciones(int nHabitaciones)
+    {
         this.nHabitaciones = nHabitaciones;
     }
 
-    public String getTipo() {
+    public String getTipo()
+    {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(String tipo)
+    {
         this.tipo = tipo;
     }
 
-    public String getFumador() {
+    public String getFumador()
+    {
         return fumador;
     }
 
-    public void setFumador(String fumador) {
+    public void setFumador(String fumador)
+    {
         this.fumador = fumador;
     }
 
-    public String getRegimen() {
+    public String getRegimen()
+    {
         return regimen;
     }
 
-    public void setRegimen(String regimen) {
+    public void setRegimen(String regimen)
+    {
         this.regimen = regimen;
     }
 
-    public Cliente getDni() {
+    public Cliente getDni()
+    {
         return dni;
     }
 
-    public void setDni(Cliente dni) {
+    public void setDni(Cliente dni)
+    {
         this.dni = dni;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reservahabitacion)) {
+        if (!(object instanceof Reservahabitacion))
+        {
             return false;
         }
         Reservahabitacion other = (Reservahabitacion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "entidades.Reservahabitacion[ id=" + id + " ]";
     }
     

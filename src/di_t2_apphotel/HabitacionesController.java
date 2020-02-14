@@ -50,7 +50,8 @@ import javax.persistence.RollbackException;
  *
  * @author Alberto León
  */
-public class HabitacionesController implements Initializable {
+public class HabitacionesController implements Initializable
+{
 
     private EntityManager em;
     private boolean errorFormato = false;
@@ -98,7 +99,8 @@ public class HabitacionesController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         spinnerHabitaciones.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
         spinnerHabitaciones.setEditable(false);
         lista.add("Individual");
@@ -111,7 +113,8 @@ public class HabitacionesController implements Initializable {
     }
 
     @FXML
-    private void onActionListenerLimpiar(ActionEvent event) {
+    private void onActionListenerLimpiar(ActionEvent event)
+    {
 
         //Alerta que avisa al usuario antes de borrar los datos
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer limpiar los datos (no se borrarán sus datos)?", ButtonType.YES, ButtonType.NO);
@@ -119,7 +122,8 @@ public class HabitacionesController implements Initializable {
 
         Optional<ButtonType> result = alerta.showAndWait();
         //Si el usuario pulsa que si, los campos se limpiarán y se deshabilitaran
-        if (result.get() == ButtonType.YES) {
+        if (result.get() == ButtonType.YES)
+        {
             deshabilitar();
             textFieldDNI.setText("");
             textFieldDNI.setDisable(false);
@@ -138,141 +142,169 @@ public class HabitacionesController implements Initializable {
     }
 
     @FXML
-    private void onActionListenerAceptar(ActionEvent event) {
+    private void onActionListenerAceptar(ActionEvent event)
+    {
 
         Alert alerta;
         Reservahabitacion habitacion = new Reservahabitacion();
         errorFormato = false;
-        boolean alert=true;
-        if (cliente == null) {
+        boolean alert = true;
+        if (cliente == null)
+        {
             cliente = new Cliente();
         }
-        
+
         // Expresion regular para comprabar el dni.
         String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
         Pattern pat = Pattern.compile(dniRegexp);
         Matcher mat = pat.matcher(textFieldDNI.getText());
-            
-        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
+
+        if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches()))
+        {
             cliente.setDni(textFieldDNI.getText());
 
             // Expresion regular para comprabar el dni.
             String name = "[A-Za-z]*";
             pat = Pattern.compile(name);
             mat = pat.matcher(textFieldNombre.getText());
-            if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("") && (mat.matches())) {
+            if (textFieldNombre.getText() != null && !textFieldNombre.getText().equals("") && (mat.matches()))
+            {
                 cliente.setNombre(textFieldNombre.getText());
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un nombre");
                 alerta.showAndWait();
                 errorFormato = true;
-                alert=false;
+                alert = false;
             }
 
-            if (textFieldDireccion != null && !textFieldDireccion.getText().equals("")) {
+            if (textFieldDireccion != null && !textFieldDireccion.getText().equals(""))
+            {
                 cliente.setDireccion(textFieldDireccion.getText());
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una direccion");
                 alerta.showAndWait();
                 errorFormato = true;
-                alert=false;
+                alert = false;
             }
 
-            if (textFieldLocalidad != null && !textFieldLocalidad.getText().equals("")) {
+            if (textFieldLocalidad != null && !textFieldLocalidad.getText().equals(""))
+            {
                 cliente.setLocalidad(textFieldLocalidad.getText());
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la localidad");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
-            if (comboBoxProvincia.getValue() != null && !comboBoxProvincia.getValue().toString().isEmpty()) {
+            if (comboBoxProvincia.getValue() != null && !comboBoxProvincia.getValue().toString().isEmpty())
+            {
                 cliente.setProvincia(comboBoxProvincia.getValue());
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce una provincia");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
-            if (datePickerLlegada.getValue() != null && !datePickerLlegada.getValue().toString().isEmpty()) {
+            if (datePickerLlegada.getValue() != null && !datePickerLlegada.getValue().toString().isEmpty())
+            {
                 LocalDate localDate = datePickerLlegada.getValue();
                 ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
                 Instant instant = zonedDateTime.toInstant();
                 Date llegada = Date.from(instant);
                 habitacion.setLlegada(llegada);
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de llegada");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
-            if (datePickerSalida.getValue() != null && !datePickerSalida.getValue().toString().isEmpty()) {
+            if (datePickerSalida.getValue() != null && !datePickerSalida.getValue().toString().isEmpty())
+            {
                 LocalDate localDate = datePickerSalida.getValue();
                 ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
                 Instant instant = zonedDateTime.toInstant();
                 Date salida = Date.from(instant);
                 habitacion.setSalida(salida);
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce la fecha de salida");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
             habitacion.setNHabitaciones(spinnerHabitaciones.getValue());
 
-            if (comboBoxTipoHab.getValue() != null && !comboBoxTipoHab.getValue().isEmpty()) {
+            if (comboBoxTipoHab.getValue() != null && !comboBoxTipoHab.getValue().isEmpty())
+            {
                 habitacion.setTipo(comboBoxTipoHab.getValue());
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un tipo de habitación");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
-            if (checkBoxFumador.isSelected()) {
+            if (checkBoxFumador.isSelected())
+            {
                 habitacion.setFumador("Fumador");
-            } else {
+            } else
+            {
                 habitacion.setFumador("No Fumador");
             }
 
-            if (radioButtons.getSelectedToggle() != null) {
-                if (radBtnAlojamientoDesayuno.isSelected()) {
+            if (radioButtons.getSelectedToggle() != null)
+            {
+                if (radBtnAlojamientoDesayuno.isSelected())
+                {
                     habitacion.setRegimen("Alojamiento y desayuno");
-                } else if (radBtnMediaPension.isSelected()) {
+                } else if (radBtnMediaPension.isSelected())
+                {
                     habitacion.setRegimen("Media Pensión");
-                } else if (radBtnPensionCompleta.isSelected()) {
+                } else if (radBtnPensionCompleta.isSelected())
+                {
                     habitacion.setRegimen("Pensión Completa");
                 }
-            } else if(alert){
+            } else if (alert)
+            {
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un Régimen");
                 alerta.showAndWait();
                 errorFormato = true;
-                 alert=false;
+                alert = false;
             }
 
             habitacion.setDni(cliente);
 
-            if (!errorFormato) {
-                try {
+            if (!errorFormato)
+            {
+                try
+                {
                     alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
                     alerta.setHeaderText("Enviar Reserva");
                     Optional<ButtonType> result = alerta.showAndWait();
 
-                    if (result.get() == ButtonType.YES) {
+                    if (result.get() == ButtonType.YES)
+                    {
+                        em.getTransaction().begin();
                         em.merge(cliente);
                         em.persist(habitacion);
-                        em.getTransaction().begin();
                         em.getTransaction().commit();
 
                         Stage stage = (Stage) btnAceptar.getScene().getWindow();
                         stage.close();
                     }
 
-                } catch (RollbackException e) {
+                } catch (RollbackException e)
+                {
                     em.getTransaction().rollback();
                     alerta = new Alert(Alert.AlertType.INFORMATION, "Error al guardar los datos. Inténtelo de nuevo");
                     alerta.setContentText(e.getLocalizedMessage());
@@ -280,41 +312,48 @@ public class HabitacionesController implements Initializable {
                 }
             }
 
-        } else if(alert){
+        } else if (alert)
+        {
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI");
             alerta.showAndWait();
             errorFormato = true;
-             alert=false;
+            alert = false;
         }
-        
+
     }
 
     @FXML
-    private void onActionListenerCancelar(ActionEvent event) {
+    private void onActionListenerCancelar(ActionEvent event)
+    {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de querer cerrar la ventana (Sus datos no se guardarán)?", ButtonType.YES, ButtonType.NO);
         alerta.setHeaderText("Cerrar ventana");
 
         Optional<ButtonType> result = alerta.showAndWait();
-        if (result.get() == ButtonType.YES) {
+        if (result.get() == ButtonType.YES)
+        {
             Stage stage = (Stage) btnCancelar.getScene().getWindow();
             stage.close();
         }
     }
 
     @FXML
-    private void onActionBtnBuscar(KeyEvent event) {
-        
-        if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
+    private void onActionBtnBuscar(KeyEvent event)
+    {
+
+        if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB))
+        {
             // Expresion regular para comprabar el dni.
             String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
             Pattern pat = Pattern.compile(dniRegexp);
             Matcher mat = pat.matcher(textFieldDNI.getText());
-            
-            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null) && (mat.matches())) && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91)) {
+
+            if (textFieldDNI.getText().length() == 9 && (!textFieldDNI.getText().equals("") || (textFieldDNI.getText() != null) && (mat.matches())) && (textFieldDNI.getText().charAt(8) > 64 && textFieldDNI.getText().charAt(8) < 91))
+            {
                 deshabilitar();
                 Query queryCliente = em.createQuery("select c from Cliente c where c.dni='" + textFieldDNI.getText() + "'");
                 List<Cliente> listaCliente = queryCliente.getResultList();
-                if (!listaCliente.isEmpty()) {
+                if (!listaCliente.isEmpty())
+                {
 
                     textFieldNombre.setDisable(true);
                     textFieldDireccion.setDisable(true);
@@ -328,21 +367,26 @@ public class HabitacionesController implements Initializable {
                     textFieldLocalidad.setText(cliente.getLocalidad());
 
                     cargarProvincias();
-                    if (cliente.getProvincia() != null) {
+                    if (cliente.getProvincia() != null)
+                    {
                         comboBoxProvincia.setValue(cliente.getProvincia());
-                    } else {
+                    } else
+                    {
                         comboBoxProvincia.setDisable(false);
                     }
 
-                    if (cliente.getLocalidad() != null) {
+                    if (cliente.getLocalidad() != null)
+                    {
                         textFieldLocalidad.setText(cliente.getLocalidad());
-                    } else {
+                    } else
+                    {
                         textFieldLocalidad.setDisable(false);
                     }
 
                     habilitar();
 
-                } else {
+                } else
+                {
                     cargarProvincias();
                     textFieldNombre.setDisable(false);
                     textFieldDireccion.setDisable(false);
@@ -353,7 +397,8 @@ public class HabitacionesController implements Initializable {
                 textFieldDNI.setDisable(true);
 
                 deshabilitarFecha();
-            } else {
+            } else
+            {
                 textFieldDNI.setDisable(false);
                 Alert alerta = new Alert(Alert.AlertType.INFORMATION, "DNI incorrecto!");
                 alerta.showAndWait();
@@ -361,7 +406,8 @@ public class HabitacionesController implements Initializable {
         }
     }
 
-    private void deshabilitar() {
+    private void deshabilitar()
+    {
         textFieldNombre.setDisable(true);
         textFieldDireccion.setDisable(true);
         textFieldLocalidad.setDisable(true);
@@ -374,7 +420,8 @@ public class HabitacionesController implements Initializable {
         vboxRadBtn.setDisable(true);
     }
 
-    private void habilitar() {
+    private void habilitar()
+    {
         datePickerLlegada.setDisable(false);
         spinnerHabitaciones.setDisable(false);
         comboBoxTipoHab.setDisable(false);
@@ -382,41 +429,53 @@ public class HabitacionesController implements Initializable {
         vboxRadBtn.setDisable(false);
     }
 
-    private void cargarProvincias() {
+    private void cargarProvincias()
+    {
         Query queryProvinciaFindAll = em.createNamedQuery("Provincia.findAll");
         List listProvincia = queryProvinciaFindAll.getResultList();
         comboBoxProvincia.setItems(FXCollections.observableList(listProvincia));
 
-        comboBoxProvincia.setConverter(new StringConverter<Provincia>() {
+        comboBoxProvincia.setConverter(new StringConverter<Provincia>()
+        {
             @Override
-            public String toString(Provincia provincia) {
-                if (provincia == null) {
+            public String toString(Provincia provincia)
+            {
+                if (provincia == null)
+                {
                     return null;
-                } else {
+                } else
+                {
                     return provincia.getCodigo() + "-" + provincia.getNombre();
                 }
             }
 
             @Override
-            public Provincia fromString(String userId) {
+            public Provincia fromString(String userId)
+            {
                 return null;
             }
         });
     }
 
-    private void deshabilitarFecha() {
-        datePickerLlegada.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
+    private void deshabilitarFecha()
+    {
+        datePickerLlegada.setDayCellFactory(picker -> new DateCell()
+        {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
                 setDisable(empty || date.compareTo(today) < 0);
             }
         });
 
-        datePickerSalida.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
+        datePickerSalida.setDayCellFactory(picker -> new DateCell()
+        {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
-                if (datePickerLlegada.getValue() != null) {
+                if (datePickerLlegada.getValue() != null)
+                {
                     setDisable(empty || date.compareTo(datePickerLlegada.getValue()) < 1);
                 }
             }
@@ -424,13 +483,16 @@ public class HabitacionesController implements Initializable {
     }
 
     @FXML
-    private void onActionFechaLlegada(ActionEvent event) {
-        if (datePickerLlegada.getValue() != null) {
+    private void onActionFechaLlegada(ActionEvent event)
+    {
+        if (datePickerLlegada.getValue() != null)
+        {
             datePickerSalida.setDisable(false);
         }
     }
 
-    public void setEm(EntityManager em) {
+    public void setEm(EntityManager em)
+    {
         this.em = em;
     }
 }
