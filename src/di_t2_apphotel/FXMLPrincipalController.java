@@ -10,6 +10,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +53,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-
 
 /**
  *
@@ -196,6 +202,10 @@ public class FXMLPrincipalController implements Initializable
         }
     }
 
+    @FXML
+    private void onActionAyuda(ActionEvent event)
+    {
+    }
 
     public class Browser extends Region
     {
