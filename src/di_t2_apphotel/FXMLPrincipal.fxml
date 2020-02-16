@@ -19,7 +19,17 @@
                   <MenuItem fx:id="menuSalonHabana" mnemonicParsing="false" onAction="#onActionSalonHabana" text="Salón Habana" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Ayuda" />
+            <Menu mnemonicParsing="false" onAction="#onActionAyuda" text="Ayuda">
+               <items>
+                  <MenuItem fx:id="helpid" mnemonicParsing="false" onAction="#onActionHelp" text="help" />
+               </items></Menu>
+            <Menu mnemonicParsing="false" text="Informes">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onActionInforme1" text="Listado de clientes" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionInforme2" text="Listado reserva Habitación" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionInforme3" text="Listado reserva Salón" />
+              </items>
+            </Menu>
          </menus>
       </MenuBar>
    </top>
