@@ -3,8 +3,6 @@ package di_t2_apphotel;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,7 +60,7 @@ public class DI_T2_AppHotel extends Application {
         em.close();
         emf.close();
         try {
-            DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
+            DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb;shutdown=true");
         } catch (SQLException ex) {
         }
     }
