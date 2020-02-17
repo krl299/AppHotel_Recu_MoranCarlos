@@ -312,9 +312,8 @@ public class SalonHabanaController implements Initializable {
         if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
             if (cliente == null) {
                 cliente = new Cliente();
-            }
-
-            else if (textFieldDNI.getText() != null && !textFieldDNI.getText().isEmpty()) {
+            }          
+            if (textFieldDNI.getText() != null && !textFieldDNI.getText().isEmpty()) {
                 cliente.setDni(textFieldDNI.getText());
                 salon.setDni(cliente);
             }

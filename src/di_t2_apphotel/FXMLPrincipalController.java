@@ -151,7 +151,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/xdb","sa","");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel1.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
@@ -170,7 +170,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/xdb","sa","");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel2.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
@@ -189,7 +189,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/xdb","sa","");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel3.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
@@ -200,11 +200,6 @@ public class FXMLPrincipalController implements Initializable
             System.out.println("Error al recuperar el jasper");
             JOptionPane.showMessageDialog(null, ex);
         }
-    }
-
-    @FXML
-    private void onActionAyuda(ActionEvent event)
-    {
     }
 
     public class Browser extends Region

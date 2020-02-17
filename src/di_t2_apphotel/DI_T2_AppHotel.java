@@ -60,7 +60,7 @@ public class DI_T2_AppHotel extends Application {
         em.close();
         emf.close();
         try {
-            DriverManager.getConnection("jdbc:derby:C:\\DBHotel;shutdown=true");
+            DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb;shutdown=true");
         } catch (SQLException ex) {
         }
     }
