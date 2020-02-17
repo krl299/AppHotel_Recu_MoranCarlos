@@ -19,4 +19,3 @@ Control de errores implementados:
         4. Control de números en Salon Habana para número de personas y número de días.
         5. Comprobación para que estén todos los datos antes de realizar la reserva.
         6. Comprobación para introducir sólo 9 números en el dni.
-    
