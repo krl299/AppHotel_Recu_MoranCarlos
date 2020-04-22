@@ -51,8 +51,6 @@ public class SalonHabanaController implements Initializable {
     private boolean errorFormato = false;
     private ArrayList<String> lista = new ArrayList<String>();
     private Cliente cliente;
-    private boolean alert=true;
-
     @FXML
     private TextField textFieldDNI;
     @FXML
@@ -127,11 +125,17 @@ public class SalonHabanaController implements Initializable {
         temporizador.getSegundos().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if(newValue.intValue() == 0) {
+                if (newValue.intValue() == 0) {
                     Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Expiración del tiempo, vuelva a hacer la reserva.");
                     alerta.show();
                     btnAceptar.setDisable(true);
                     btnLimpiar.setDisable(true);
+                    roundBtnBanquete.setDisable(true);
+                    roundBtnCongreso.setDisable(true);
+                    roundBtnJornada.setDisable(true);
+                    datePickerFecha.setDisable(true);
+                    textFiedlPersonas.setDisable(true);
+                    comboBoxTipoCocina.setDisable(true);
                 }
             }
 
@@ -300,9 +304,9 @@ public class SalonHabanaController implements Initializable {
     @FXML
     private void onActionAceptar(ActionEvent event) {
         errorFormato = false;
+        String error = "Faltan los siguientes campos por completar:";
         Alert alerta;
         Reservasalon salon = new Reservasalon();
-
 
         // Expresion regular para comprabar el dni.
         String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
@@ -312,7 +316,7 @@ public class SalonHabanaController implements Initializable {
         if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
             if (cliente == null) {
                 cliente = new Cliente();
-            }          
+            }
             if (textFieldDNI.getText() != null && !textFieldDNI.getText().isEmpty()) {
                 cliente.setDni(textFieldDNI.getText());
                 salon.setDni(cliente);
@@ -324,62 +328,66 @@ public class SalonHabanaController implements Initializable {
             mat = pat.matcher(textFieldTelefono.getText());
 
             if (textFieldNombre.getText() != null && !textFieldNombre.getText().isEmpty()) {
-             cliente.setNombre(textFieldNombre.getText());
-            }else if (alert){
-                   errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un nombre correcto");
-                alerta.showAndWait();
-                   alert=false;
+                cliente.setNombre(textFieldNombre.getText());
+            } else if (textFieldNombre.getText() == null) {
+                error += "\n- Nombre.";
+                errorFormato = true;
             }
 
             if (textFieldDireccion.getText() != null && !textFieldDireccion.getText().isEmpty()) {
-                 cliente.setDireccion(textFieldDireccion.getText());
-            } else  if(alert){
-               errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una dirección");
-                alerta.showAndWait();
-                alert=false;
+                cliente.setDireccion(textFieldDireccion.getText());
+            } else if (textFieldDireccion.getText() == null) {
+                error += "\n- Dirección.";
+                errorFormato = true;
             }
-
 
             if (textFieldTelefono.getText() != null && !textFieldTelefono.getText().isEmpty() && textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$")) {
                 cliente.setTelefono(textFieldTelefono.getText());
 
-            } else if (!textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$") && alert) {
+            } else if (!textFieldTelefono.getText().matches("[6|7|9][0-9]{8}$") && errorFormato) {
                 errorFormato = true;
                 alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono valido");
                 alerta.showAndWait();
-                alert=false;
-            } else if(alert){
+            } else if (textFieldTelefono.getText() == null) {
+                error += "\n- Teléfono.";
                 errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número de teléfono");
-                alerta.showAndWait();
-                alert=false;
             }
 
-            if (grupoBtn1.getSelectedToggle() == null && !alert) {
+            if (grupoBtn1.getSelectedToggle() == null && !errorFormato) {
+                error += "\n -Tipo de Evento.";
                 errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Seleccione un tipo de evento");
-                alerta.showAndWait();
-                alert=false;
             } else {
+                String error1="";
                 if (roundBtnBanquete.isSelected()) {
                     salon.setEvento("Banquete");
                     /*Comprobación del radio button Banquete*/
-                    comprobarBanquete(salon);
-
+                    error1 = comprobarBanquete(salon);
+                    if (error1 != null) {
+                        error += error1;
+//                        errorFormato = true;
+                    }
                 } else if (roundBtnJornada.isSelected()) {
                     salon.setEvento("Jornada");
                     /*Comprobación del radio button Jornada*/
-                    comprobarJornada(salon);
-
+                    error1 = comprobarJornada(salon);
+                    if (error1 != null) {
+                        error += error1;
+//                        errorFormato = true;
+                    }
                 } else {
                     salon.setEvento("Congreso");
                     /*Comprobación del radio button Congreso*/
-                    comprobarCongreso(salon);
+                    error1 = comprobarCongreso(salon);
+                    if (error1 != null) {
+                        error += error1;
+//                        errorFormato = true;
+                    }
                 }
             }
-            if (!errorFormato) {
+            if (errorFormato) {
+                alerta = new Alert(Alert.AlertType.INFORMATION, error);
+                alerta.showAndWait();
+            } else {
                 try {
 
                     alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
@@ -408,9 +416,7 @@ public class SalonHabanaController implements Initializable {
             alerta = new Alert(Alert.AlertType.INFORMATION, "Introduce un DNI correctamente!");
             alerta.showAndWait();
             errorFormato = true;
-            alert=false;
         }
-        alert=true;
     }
 
     public DatePicker getfecha() {
@@ -436,36 +442,29 @@ public class SalonHabanaController implements Initializable {
         this.em = em;
     }
 
-    public void comprobarBanquete(Reservasalon salon) {
-        Alert alerta;
-
-        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && alert)) {
+    public String comprobarBanquete(Reservasalon salon) {
+        String error="";
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && errorFormato)) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-           alert=false;
-        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*") && alert) {
+            error += "\n -Banquete: introduzca un número correcto de personas (max:50)";
+        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*") && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-            alert=false;
-        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0 && alert) {
+            error += "\n -Banquete: introduzca un número correcto de personas (max:50)";
+        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0 && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-            alert=false;
-        } else {
+            error += "\n -Banquete: introduzca un número correcto de personas (max:50)";
+        } else if (textFiedlPersonas.getText() != null) {
             salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText()));
-            alert=true;
+        } else {
+            errorFormato = true;
+            error += "\n -Banquete: introduzca un número correcto de personas (max:50)";
         }
 
         salon.setComida(comboBoxTipoCocina.getValue());
 
-        if (datePickerFecha.getValue() == null || datePickerFecha.getValue().toString().isEmpty()&& alert) {
+        if (datePickerFecha.getValue() == null || datePickerFecha.getValue().toString().isEmpty() && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
-            alerta.showAndWait();
-            alert=false;
+            error += "\n -Banquete: introduzca una fecha de evento";
         } else {
             LocalDate localDate = datePickerFecha.getValue();
             ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
@@ -473,39 +472,33 @@ public class SalonHabanaController implements Initializable {
             Date date = Date.from(instant);
             salon.setFecha(date);
         }
+        return error;
     }
 
-    public void comprobarJornada(Reservasalon salon) {
-        Alert alerta;
-
-        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty())&& alert) {
+    public String comprobarJornada(Reservasalon salon) {
+        String error="";
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty()) && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-            alert=false;
+            error += "\n -Jornada: introduzca un número correcto de personas (max:50)";
 
-        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*")&& alert) {
+        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*") && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-            alert=false;
+            error += "\n -Jornada: introduzca un número correcto de personas (max:50)";
 
-        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 && Integer.parseInt(textFiedlPersonas.getText()) < 0 && alert) {
+        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 && Integer.parseInt(textFiedlPersonas.getText()) < 0 && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-            alert=false;
+            error += "\n -Jornada: introduzca un número correcto de personas (max:50)";
 
-        } else {
+        } else if (textFiedlPersonas.getText() != null) {
             salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText()));
-            alert=true;
+        } else {
+            errorFormato = true;
+            error += "\n -Jornada: introduzca un número correcto de personas (max:50)";
         }
 
-        if (datePickerFecha.getValue() == null && alert) {
+        if (datePickerFecha.getValue() == null && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
-            alerta.showAndWait();
-            alert=false;
+            error += "\n -Jornada: introduzca una fecha de evento";
 
         } else {
             LocalDate localDate = datePickerFecha.getValue();
@@ -513,93 +506,78 @@ public class SalonHabanaController implements Initializable {
             Instant instant = zonedDateTime.toInstant();
             Date date = Date.from(instant);
             salon.setFecha(date);
-            alert=true;
         }
+        return error;
     }
 
-    public void comprobarCongreso(Reservasalon salon) {
-        Alert alerta;
-
-        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && alert)) {
+    public String comprobarCongreso(Reservasalon salon) {
+        String error="";
+        if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && errorFormato)) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-             alert=false;
+            error += "\n -Congreso: introduzca un número correcto de personas (max:50)";
 
-        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*")&& alert) {
+        } else if (textFiedlPersonas.getText().matches("[a-zA-Z]*") && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-             alert=false;
+            error += "\n -Congreso: introduzca un número correcto de personas (max:50)";
 
-        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0 && alert) {
+        } else if (Integer.parseInt(textFiedlPersonas.getText()) >= 50 || Integer.parseInt(textFiedlPersonas.getText()) < 0 && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-            alerta.showAndWait();
-             alert=false;
+            error += "\n -Congreso: introduzca un número correcto de personas (max:50)";
 
-        } else {
+        } else if (textFiedlPersonas.getText() != null) {
             salon.setNPersonas(Integer.parseInt(textFiedlPersonas.getText()));
-            alert=true;
+        } else {
+            errorFormato = true;
+            error += "\n -Congreso: introduzca un número correcto de personas (max:50)";
         }
 
         if (checkBoxHabitaciones.isSelected()) {
-            if (textFieldHab.getText() == null || textFieldHab.getText().equals("")&& alert) {
+            if (textFieldHab.getText() == null || textFieldHab.getText().equals("") && errorFormato) {
                 errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número de habitaciones");
-                alerta.showAndWait();
-                 alert=false;
-
-            } else if (textFieldHab.getText().matches("[a-zA-Z]*")&& alert) {
+                error += "\n -Congreso: introduzca un número de habitaciones";
+            } else if (textFieldHab.getText().matches("[a-zA-Z]*") && errorFormato) {
                 errorFormato = true;
-                alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca un número correcto de personas (max:50)");
-                alerta.showAndWait();
-                 alert=false;
-
-            } else {
+                error += "\n -Congreso: introduzca un número de habitaciones";
+            } else if (textFieldHab.getText() != null) {
                 salon.setHabitaciones(Integer.parseInt(textFieldHab.getText()));
-                alert=true;
+            } else {
+                errorFormato = true;
+                error += "\n -Congreso: introduzca un número de habitaciones";
             }
         }
 
         salon.setComida(comboBoxTipoCocina.getValue());
 
-        if (datePickerFecha.getValue() == null && alert) {
+        if (datePickerFecha.getValue() == null && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca una fecha");
-            alerta.showAndWait();
-             alert=false;
+            error += "\n -Congreso: introduzca una fecha de evento";
         } else {
             LocalDate localDate = datePickerFecha.getValue();
             ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
             Instant instant = zonedDateTime.toInstant();
             Date date = Date.from(instant);
             salon.setFecha(date);
-             alert=true;
         }
 
-        if ((textFieldDIas.getText() == null || textFieldDIas.getText().isEmpty())&& alert) {
+        if ((textFieldDIas.getText() == null || textFieldDIas.getText().isEmpty()) && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el número correcto de días");
-            alerta.showAndWait();
-             alert=false;
-        } else if (textFieldDIas.getText().matches("[a-zA-Z]*")&& alert) {
+            error += "\n -Congreso: se desconoce la duración del evento";
+        } else if (textFieldDIas.getText().matches("[a-zA-Z]*") && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el correcto de días");
-            alerta.showAndWait();
-             alert=false;
-        } else if (Integer.parseInt(textFieldDIas.getText()) >= 50 || Integer.parseInt(textFieldDIas.getText()) < 0 && alert) {
+            error += "\n -Congreso: se desconoce la duración del evento";
+        } else if (Integer.parseInt(textFieldDIas.getText()) >= 50 || Integer.parseInt(textFieldDIas.getText()) < 0 && errorFormato) {
             errorFormato = true;
-            alerta = new Alert(Alert.AlertType.INFORMATION, "Introduzca el correcto de días");
-            alerta.showAndWait();
-             alert=false;
-        } else {
+            error += "\n -Congreso: se desconoce la duración del evento";
+        } else if (textFieldDIas.getText() != null) {
             salon.setNDias(Integer.parseInt(textFieldDIas.getText()));
-             alert=true;
+        } else {
+            errorFormato = true;
+            error += "\n -Congreso: se desconoce la duración del evento";
         }
+        return error;
     }
-    
-     public void terminar() {
+
+    public void terminar() {
         temporizador.getTimeline().stop();
     }
 }

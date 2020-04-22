@@ -7,7 +7,7 @@
     <class>entidades.Reservahabitacion</class>
     <class>entidades.Provincia</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://192.168.8.207:9001/xdb"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost/xdb"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>
       <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
       <property name="javax.persistence.jdbc.password" value=""/>
