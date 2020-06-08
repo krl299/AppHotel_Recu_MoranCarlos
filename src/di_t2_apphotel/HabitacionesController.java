@@ -148,7 +148,7 @@ public class HabitacionesController implements Initializable {
             cliente = new Cliente();
         }
 
-        // Expresion regular para comprabar el dni.
+        // Expresion regular para comprobar el dni.
         String dniRegexp = "(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))";
         Pattern pat = Pattern.compile(dniRegexp);
         Matcher mat = pat.matcher(textFieldDNI.getText());
@@ -156,7 +156,7 @@ public class HabitacionesController implements Initializable {
         if (textFieldDNI.getText() != null && !textFieldDNI.getText().equals("") && (mat.matches())) {
             cliente.setDni(textFieldDNI.getText());
 
-            // Expresion regular para comprabar el dni.
+            // Expresion regular para comprabar el nombre.
             String name = "[A-Za-z]*";
             pat = Pattern.compile(name);
             mat = pat.matcher(textFieldNombre.getText());
@@ -246,7 +246,31 @@ public class HabitacionesController implements Initializable {
 
             if (!errorFormato) {
                 try {
-                    alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
+                    String confirmacion = "¿Son correctos los datos introducidos?";
+                    confirmacion += "\n DNI :" + textFieldDNI.getText();
+                    confirmacion += "\n Nombre :" + textFieldNombre.getText();
+                    confirmacion += "\n Dirección :" + textFieldDireccion.getText();
+                    confirmacion += "\n Localidad :" + textFieldLocalidad.getText();
+                    confirmacion += "\n Provincia :" + comboBoxProvincia.getSelectionModel().getSelectedItem().getNombre();
+                    confirmacion += "\n Fecha de entrada :" + datePickerLlegada.getValue();
+                    confirmacion += "\n Fecha de salida :" + datePickerSalida.getValue();
+                    confirmacion += "\n Número de habitaciones :" + spinnerHabitaciones.getValue();
+                    confirmacion += "\n Tipo de habitacion :" + comboBoxTipoHab.getSelectionModel().getSelectedItem();
+                    
+                    if (radBtnAlojamientoDesayuno.isSelected()) {
+                        confirmacion += "\n Regimen :" + radBtnAlojamientoDesayuno.getText();
+                    } else if (radBtnMediaPension.isSelected()) {
+                        confirmacion += "\n Regimen :" + radBtnMediaPension.getText();
+                    }else if(radBtnPensionCompleta.isSelected()){
+                        confirmacion += "\n Regimen :" + radBtnPensionCompleta.getText();
+                    }
+                    if(checkBoxFumador.isSelected()){
+                        confirmacion+="\n Fumador :SI";
+                    }else{
+                        confirmacion+="\n Fumador :NO";
+                    }
+
+                    alerta = new Alert(Alert.AlertType.CONFIRMATION, confirmacion, ButtonType.YES, ButtonType.NO);
                     alerta.setHeaderText("Enviar Reserva");
                     Optional<ButtonType> result = alerta.showAndWait();
 

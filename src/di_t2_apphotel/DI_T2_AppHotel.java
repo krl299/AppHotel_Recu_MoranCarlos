@@ -13,10 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Alberto Leon
- */
+
 public class DI_T2_AppHotel extends Application {
 
     private EntityManager em;

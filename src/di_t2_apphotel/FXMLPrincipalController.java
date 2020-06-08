@@ -1,5 +1,7 @@
 package di_t2_apphotel;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -8,15 +10,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,8 +55,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Alberto León
  */
-public class FXMLPrincipalController implements Initializable
-{
+public class FXMLPrincipalController implements Initializable {
 
     private EntityManager em;
     public static Connection conexion = null;
@@ -73,16 +69,16 @@ public class FXMLPrincipalController implements Initializable
     private Scene scene;
     @FXML
     private MenuItem helpid;
+    @FXML
+    private MenuItem helptext;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
 
     @FXML
-    private void onActionHabitaciones(ActionEvent event) throws IOException
-    {
+    private void onActionHabitaciones(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Habitaciones.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
@@ -99,8 +95,7 @@ public class FXMLPrincipalController implements Initializable
     }
 
     @FXML
-    private void onActionSalonHabana(ActionEvent event) throws IOException
-    {
+    private void onActionSalonHabana(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SalonHabana.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
@@ -118,19 +113,27 @@ public class FXMLPrincipalController implements Initializable
         stage.setOnHidden(e -> habana.terminar());
     }
 
-    public void setEm(EntityManager em)
-    {
+    public void setEm(EntityManager em) throws SQLException {
         this.em = em;
+        inicializarConexion();
     }
 
-    public void setEmf(EntityManagerFactory emf)
-    {
+    public void inicializarConexion() throws SQLException {
+        try {
+            Class.forName("org.hsqldb.jdbcDriver").newInstance();
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/xdb", "sa", "");
+        } catch (Exception ex) {
+            Logger.getLogger(FXMLPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        conexion = em.unwrap(java.sql.Connection.class);
+    }
+
+    public void setEmf(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
     @FXML
-    private void onActionHelp(ActionEvent event)
-    {
+    private void onActionHelp(ActionEvent event) {
         Stage stage = new Stage();
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -139,96 +142,85 @@ public class FXMLPrincipalController implements Initializable
         stage.show();
 
     }
+
     @FXML
-    private void onActionAyuda(ActionEvent event)
-    {
+    private void onActionAyuda(ActionEvent event) {
 
     }
 
     @FXML
-    private void onActionInforme1(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
-    {
-        try
-        {
-            Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
+    private void onActionInforme1(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        try {
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel1.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
             JasperViewer.viewReport(jp, false);
 
-        } catch (JRException ex)
-        {
+        } catch (JRException ex) {
             System.out.println("Error al recuperar el jasper");
             JOptionPane.showMessageDialog(null, ex);
         }
     }
 
     @FXML
-    private void onActionInforme2(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
-    {
-        try
-        {
-            Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
+    private void onActionInforme2(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        try {
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel2.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
             JasperViewer.viewReport(jp, false);
 
-        } catch (JRException ex)
-        {
+        } catch (JRException ex) {
             System.out.println("Error al recuperar el jasper");
             JOptionPane.showMessageDialog(null, ex);
         }
     }
 
     @FXML
-    private void onActionInforme3(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
-    {
-        try
-        {
-            Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://192.168.8.207:9001/xdb","sa","");
+    private void onActionInforme3(ActionEvent event) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        try {
             JasperReport jr = (JasperReport) JRLoader.loadObject(FXMLPrincipalController.class.getResource("Informes/APPHotel3.jasper"));
             Map parametros = new HashMap();
             JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
             JasperViewer.viewReport(jp, false);
 
-        } catch (JRException ex)
-        {
+        } catch (JRException ex) {
             System.out.println("Error al recuperar el jasper");
             JOptionPane.showMessageDialog(null, ex);
         }
     }
 
-    public class Browser extends Region
-    {
+    @FXML
+    private void Manual(ActionEvent event) throws IOException {
+        Desktop ficheromanual = Desktop.getDesktop();
+        File file = new File("Documentación.pdf");
+        ficheromanual.open(file);
+    }
+
+
+    public class Browser extends Region {
 
         private HBox toolBar;
-        private String[] imageFiles = new String[]
-        {
+        private String[] imageFiles = new String[]{
             "resources/menu.png",
             "resources/reservaHab.png",
             "resources/reservaSalon.png",
             "resources/BaseDatos.png",
             "resources/Github.png"
         };
-        private String[] captions = new String[]
-        {
+        private String[] captions = new String[]{
             "Menu Principal",
             "Reservas Habitaciones",
             "Reserservas Salón Habana",
             "Base de Datos",
             "Github"
         };
-        private String[] urls = new String[]
-        {
+        private String[] urls = new String[]{
             FXMLPrincipalController.class.getResource("paginas/menu.html").toExternalForm(),
             FXMLPrincipalController.class.getResource("paginas/Habitacion.html").toExternalForm(),
             FXMLPrincipalController.class.getResource("paginas/salonhabana.html").toExternalForm(),
             FXMLPrincipalController.class.getResource("paginas/BD.html").toExternalForm(),
-            "https://github.com/ieslosmontecillos-di/di-t2-apphotel-bionic"
+            "https://github.com/krl299/AppHotel_Recu_MoranCarlos"
         };
         final ImageView selectedImage = new ImageView();
         final Hyperlink[] hpls = new Hyperlink[captions.length];
@@ -240,24 +232,20 @@ public class FXMLPrincipalController implements Initializable
         final WebView browser = new WebView();
         final WebEngine webEngine = browser.getEngine();
 
-        public Browser()
-        {
+        public Browser() {
             //apply the styles
             getStyleClass().add("browser");
             //Para tratar lo tres enlaces
-            for (int i = 0; i < captions.length; i++)
-            {
+            for (int i = 0; i < captions.length; i++) {
                 Hyperlink hpl = hpls[i] = new Hyperlink(captions[i]);
                 Image image = images[i] = new Image(getClass().getResourceAsStream(imageFiles[i]));
                 hpl.setGraphic(new ImageView(image));
                 final String url = urls[i];
 
                 //proccess event
-                hpl.setOnAction(new EventHandler<ActionEvent>()
-                {
+                hpl.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle(ActionEvent e)
-                    {
+                    public void handle(ActionEvent e) {
                         webEngine.load(url);
                     }
                 });
@@ -275,28 +263,22 @@ public class FXMLPrincipalController implements Initializable
 
             final WebHistory history = webEngine.getHistory();
 
-            history.getEntries().addListener(new ListChangeListener<WebHistory.Entry>()
-            {
+            history.getEntries().addListener(new ListChangeListener<WebHistory.Entry>() {
                 @Override
-                public void onChanged(ListChangeListener.Change<? extends WebHistory.Entry> c)
-                {
+                public void onChanged(ListChangeListener.Change<? extends WebHistory.Entry> c) {
                     c.next();
-                    for (WebHistory.Entry e : c.getRemoved())
-                    {
+                    for (WebHistory.Entry e : c.getRemoved()) {
                         comboBox.getItems().remove(e.getUrl());
                     }
-                    for (WebHistory.Entry e : c.getAddedSubList())
-                    {
+                    for (WebHistory.Entry e : c.getAddedSubList()) {
                         comboBox.getItems().add(e.getUrl());
                     }
                 }
             });
             //Se define el comportamiento del combobox
-            comboBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            comboBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent ev)
-                {
+                public void handle(ActionEvent ev) {
                     int offset = comboBox.getSelectionModel().getSelectedIndex() - history.getCurrentIndex();
                     history.go(offset);
                 }
@@ -304,14 +286,11 @@ public class FXMLPrincipalController implements Initializable
 
             smallView.setPrefSize(120, 80);
             //handle popup windows
-            webEngine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>()
-            {
+            webEngine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                 @Override
-                public WebEngine call(PopupFeatures config)
-                {
+                public WebEngine call(PopupFeatures config) {
                     smallView.setFontScale(0.8);
-                    if (!toolBar.getChildren().contains(smallView))
-                    {
+                    if (!toolBar.getChildren().contains(smallView)) {
                         toolBar.getChildren().add(smallView);
                     }
                     return smallView.getEngine();
@@ -320,23 +299,21 @@ public class FXMLPrincipalController implements Initializable
             );
 
             // load the web page
-            webEngine.load("https://www.palladiumhotelgroup.com/es/hoteles");
+            webEngine.load(urls[0]);
 
             //add components
             getChildren().add(toolBar);
             getChildren().add(browser);
         }
 
-        private Node createSpacer()
-        {
+        private Node createSpacer() {
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
             return spacer;
         }
 
         @Override
-        protected void layoutChildren()
-        {
+        protected void layoutChildren() {
             double w = getWidth();
             double h = getHeight();
             double tbHeight = toolBar.prefHeight(w);
@@ -346,14 +323,12 @@ public class FXMLPrincipalController implements Initializable
         }
 
         @Override
-        protected double computePrefWidth(double height)
-        {
+        protected double computePrefWidth(double height) {
             return 750;
         }
 
         @Override
-        protected double computePrefHeight(double width)
-        {
+        protected double computePrefHeight(double width) {
             return 500;
         }
     }

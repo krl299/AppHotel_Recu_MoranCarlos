@@ -357,7 +357,7 @@ public class SalonHabanaController implements Initializable {
                 error += "\n -Tipo de Evento.";
                 errorFormato = true;
             } else {
-                String error1="";
+                String error1 = "";
                 if (roundBtnBanquete.isSelected()) {
                     salon.setEvento("Banquete");
                     /*Comprobación del radio button Banquete*/
@@ -389,8 +389,31 @@ public class SalonHabanaController implements Initializable {
                 alerta.showAndWait();
             } else {
                 try {
+                    String confirmacion = "¿Son correctos los datos introducidos?";
+                    confirmacion += "\n DNI :" + textFieldDNI.getText();
+                    confirmacion += "\n Nombre :" + textFieldNombre.getText();
+                    confirmacion += "\n Dirección :" + textFieldDireccion.getText();
+                    confirmacion += "\n Teléfono :" + textFieldTelefono.getText();
+                    if (roundBtnBanquete.isSelected()) {
+                        confirmacion += "\n Evento : Banquete";
+                        confirmacion += "\n Número de personas :" + textFiedlPersonas.getText();
+                        confirmacion += "\n Tipo de cocina :" + comboBoxTipoCocina.getSelectionModel().getSelectedItem();
+                        confirmacion += "\n Fecha :" + datePickerFecha.getValue();
+                    } else if (roundBtnJornada.isSelected()) {
+                        confirmacion += "\n Evento : Jornada";
+                        confirmacion += "\n Número de personas :" + textFiedlPersonas.getText();
+                        confirmacion += "\n Fecha :" + datePickerFecha.getValue();
+                    } else if (roundBtnCongreso.isSelected()) {
+                        confirmacion += "\n Evento : Congreso";
+                        confirmacion += "\n Número de personas :" + textFiedlPersonas.getText();
+                        if(checkBoxHabitaciones.isSelected()){
+                            confirmacion += "\n Número de habitaciones :" + textFieldHab.getText();
+                        }
+                        confirmacion += "\n Fecha :" + datePickerFecha.getValue();
+                        confirmacion += "\n Duración del evento :" + textFieldDIas.getText()+" dias";
+                    }
 
-                    alerta = new Alert(Alert.AlertType.CONFIRMATION, "¿Son correctos los datos introducidos?", ButtonType.YES, ButtonType.NO);
+                    alerta = new Alert(Alert.AlertType.CONFIRMATION, confirmacion, ButtonType.YES, ButtonType.NO);
                     alerta.setHeaderText("Enviar Reserva");
 
                     Optional<ButtonType> result = alerta.showAndWait();
@@ -443,7 +466,7 @@ public class SalonHabanaController implements Initializable {
     }
 
     public String comprobarBanquete(Reservasalon salon) {
-        String error="";
+        String error = "";
         if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && errorFormato)) {
             errorFormato = true;
             error += "\n -Banquete: introduzca un número correcto de personas (max:50)";
@@ -476,7 +499,7 @@ public class SalonHabanaController implements Initializable {
     }
 
     public String comprobarJornada(Reservasalon salon) {
-        String error="";
+        String error = "";
         if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty()) && errorFormato) {
             errorFormato = true;
             error += "\n -Jornada: introduzca un número correcto de personas (max:50)";
@@ -511,7 +534,7 @@ public class SalonHabanaController implements Initializable {
     }
 
     public String comprobarCongreso(Reservasalon salon) {
-        String error="";
+        String error = "";
         if ((textFiedlPersonas.getText() == null || textFiedlPersonas.getText().isEmpty() && errorFormato)) {
             errorFormato = true;
             error += "\n -Congreso: introduzca un número correcto de personas (max:50)";
